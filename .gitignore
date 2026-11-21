@@ -1,8 +1,5 @@
-*.doc
-*.rtf
 *.tmp
 *~
 .DS_Store
 GEMINI.md
 README.md
-
