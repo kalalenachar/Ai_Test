@@ -5,3 +5,5 @@ GEMINI.md
 README.md
 .~lock.*#
 .~lock.*
+__pycache__/
+*.pyc
