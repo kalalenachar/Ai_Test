@@ -91,7 +91,7 @@ Whenever line numbers are updated:
    - `page`: Must remain canonical (`P1`, `P2`, ..., `P30`).
    - `line_number` and `line`: Must be the identical integer matching the rendered page line.
    - **Sorting**: Items must be sorted strictly by `(int(page[1:]), line_number)`.
-   - **Sequential IDs**: `id` must be renumbered consecutively `1..N` (1 to 269).
+   - **Sequential IDs**: `id` must be renumbered consecutively `1..N` (1 to 285).
 
 2. **`index.html`**:
    - The embedded offline dataset in `<script id="fallback-data" type="application/json">...</script>` must match `changes_data.json` byte-for-byte.
