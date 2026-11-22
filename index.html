@@ -6163,9 +6163,9 @@ function processDataSet(data) {
         return extractNum(a.key) - extractNum(b.key);
     });
 
-    // If activeGroup is not in groups, default to first group or 'all'
-    if (activeGroup !== 'all' && !groups.some(g => g.key === activeGroup)) {
-        activeGroup = groups.length > 0 ? groups[0].key : 'all';
+    // Ensure activeGroup is always a valid 10-page group (default to first group)
+    if (!groups.some(g => g.key === activeGroup)) {
+        activeGroup = groups.length > 0 ? groups[0].key : 'p1_10';
     }
 
     renderTabs();
@@ -6175,23 +6175,12 @@ function processDataSet(data) {
     filterAndDisplay();
 }
 
-// Render Top and Bottom Tabs dynamically
+// Render Top and Bottom Tabs dynamically (strictly 10-page group tabs)
 function renderTabs() {
     let topHtml = '';
     let bottomHtml = '';
 
-    // "All Ranges / सर्वविभागाः" option
-    const isAllActive = activeGroup === 'all' ? 'active' : '';
-    const allTabHtml = `
-        <button class="tab-btn ${isAllActive}" data-group="all" role="tab" aria-selected="${activeGroup === 'all'}">
-            <span>सर्वे विभागाः (All)</span>
-            <span class="count-badge">${allItems.length}</span>
-        </button>
-    `;
-    topHtml += allTabHtml;
-    bottomHtml += allTabHtml;
-
-    // Individual Groups
+    // Individual 10-page Groups
     groups.forEach(g => {
         const isActive = activeGroup === g.key ? 'active' : '';
         const tabHtml = `
@@ -6240,14 +6229,9 @@ function renderTabs() {
 // Render Quick Page Jump Strip dynamically
 function renderJumpStrip() {
     let pages = [];
-    if (activeGroup === 'all') {
-        const allPagesSet = new Set(allItems.map(m => m.page).filter(Boolean));
-        pages = Array.from(allPagesSet).sort((a, b) => extractNum(a) - extractNum(b));
-    } else {
-        const gObj = groups.find(g => g.key === activeGroup);
-        if (gObj) {
-            pages = Array.from(gObj.pages).sort((a, b) => extractNum(a) - extractNum(b));
-        }
+    const gObj = groups.find(g => g.key === activeGroup);
+    if (gObj) {
+        pages = Array.from(gObj.pages).sort((a, b) => extractNum(a) - extractNum(b));
     }
 
     let html = `<button class="page-chip ${activeJumpPage === 'all' ? 'active' : ''}" data-jump="all">अस्मिन् विभागे सर्वे (All in Range)</button>`;
@@ -6330,7 +6314,7 @@ function renderCards() {
 
 // Update Filter Pill Counts
 function updateFilterCounts() {
-    const scopeItems = allItems.filter(m => (activeGroup === 'all' || m.group === activeGroup));
+    const scopeItems = allItems.filter(m => m.group === activeGroup);
     const total = scopeItems.length;
 
     const countFilterAll = document.getElementById('countFilterAll');
@@ -6373,8 +6357,8 @@ function filterAndDisplay() {
         const cardCat = card.getAttribute('data-category') || '';
         const item = itemMap.get(cardId);
 
-        // Group check
-        const matchesGroup = (activeGroup === 'all') || (cardGroup === activeGroup);
+        // Group check (strictly 10-page tab group)
+        const matchesGroup = (cardGroup === activeGroup);
 
         // Jump page check
         const matchesJump = (activeJumpPage === 'all') || (cardPage === activeJumpPage);
@@ -6415,12 +6399,9 @@ function filterAndDisplay() {
     });
 
     // Update Showing status text
-    const totalScope = allItems.filter(m => (activeGroup === 'all' || m.group === activeGroup)).length;
-    let groupLabel = 'All Pages';
-    if (activeGroup !== 'all') {
-        const gObj = groups.find(g => g.key === activeGroup);
-        if (gObj) groupLabel = gObj.label;
-    }
+    const totalScope = allItems.filter(m => m.group === activeGroup).length;
+    const gObj = groups.find(g => g.key === activeGroup);
+    const groupLabel = gObj ? gObj.label : activeGroup;
 
     let summaryExtras = [];
     if (activeFilter !== 'all') summaryExtras.push(`Filter: ${activeFilter}`);
