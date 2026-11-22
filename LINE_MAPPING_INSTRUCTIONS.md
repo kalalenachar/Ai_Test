@@ -63,10 +63,10 @@ Whenever verifying document line numbers, always validate against these known be
 To extract and verify rendered document line numbers programmatically without opening the GUI:
 
 ### Step 1: Render RTF to PDF with Isolated Profile
-Avoid GUI lock conflicts by using an isolated user installation profile:
+Avoid GUI lock conflicts and snap AppArmor confinement by using the snap-accessible profile directory:
 ```bash
-/snap/bin/libreoffice -env:UserInstallation=file:///tmp/lo_profile_export \
-  --headless --convert-to pdf --outdir /tmp \
+/snap/bin/libreoffice -env:UserInstallation=file:///home/samsho/snap/libreoffice/common/export_profile \
+  --headless --convert-to pdf --outdir /home/samsho/Downloads \
   "/home/samsho/Downloads/PPSM/DHARMAKOOTA YUDDHA KANDA for ai test.rtf.doc"
 ```
 
