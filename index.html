@@ -248,8 +248,8 @@ body {
     transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
-/* Search and Status Toolbar */
-.search-and-status-row {
+/* Utility Controls Toolbar (Filter Pop-up Trigger & JSON Status) */
+.controls-bar-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -260,58 +260,40 @@ body {
     gap: 0.75rem;
 }
 
-.search-box {
-    position: relative;
-    flex: 1 1 320px;
-    max-width: 600px;
-    display: flex;
+.filter-trigger-btn {
+    display: inline-flex;
     align-items: center;
-}
-
-.search-icon {
-    position: absolute;
-    left: 0.75rem;
-    font-size: 0.95rem;
-    color: var(--text-muted);
-    pointer-events: none;
-}
-
-.search-input {
-    width: 100%;
-    padding: 0.5rem 2.2rem 0.5rem 2.3rem;
-    font-size: 0.88rem;
-    font-family: inherit;
+    gap: 0.55rem;
+    padding: 0.5rem 1rem;
+    background: var(--bg-card);
     border: 1px solid var(--border-dark);
     border-radius: var(--radius-sm);
-    background: var(--bg-card);
+    font-size: 0.88rem;
+    font-weight: 700;
     color: var(--text-primary);
-    transition: all 0.15s ease;
-    min-height: 38px;
-}
-
-.search-input:focus {
-    outline: none;
-    border-color: var(--gold);
-    box-shadow: 0 0 0 3px var(--gold-light);
-}
-
-.clear-search-btn {
-    position: absolute;
-    right: 0.5rem;
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
     cursor: pointer;
-    font-size: 1rem;
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    transition: all 0.15s ease;
+    box-shadow: var(--shadow-sm);
+    user-select: none;
 }
 
-.clear-search-btn:hover {
-    color: var(--text-primary);
+.filter-trigger-btn:hover {
+    border-color: var(--gold);
+    background: var(--gold-light);
+    color: var(--gold);
+}
+
+.filter-trigger-btn .filter-icon {
+    font-size: 1rem;
+}
+
+.filter-trigger-btn .active-filter-badge {
+    padding: 0.15rem 0.6rem;
+    border-radius: 12px;
+    background: var(--gold);
+    color: #ffffff;
+    font-size: 0.76rem;
+    font-weight: 700;
 }
 
 .json-controls {
@@ -427,76 +409,148 @@ body {
     color: var(--bg-page);
 }
 
-/* Filter Bar */
-.filter-bar {
-    padding: 0.85rem 1.15rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+/* Filter Pop-up Modal & Backdrop */
+.filter-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: none;
     align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+    animation: fadeInModal 0.2s ease-out;
+}
+
+.filter-modal-dialog {
+    background: var(--bg-card);
+    border: 1px solid var(--border-dark);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUpModal 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.filter-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.1rem 1.35rem;
     border-bottom: 1px solid var(--border-color);
 }
 
-.filter-label {
-    font-size: 0.78rem;
+.filter-modal-title {
+    margin: 0;
+    font-size: 1.1rem;
     font-weight: 800;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filter-modal-close {
+    background: transparent;
+    border: none;
+    font-size: 1.25rem;
+    line-height: 1;
     color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-right: 0.25rem;
-    white-space: nowrap;
+    cursor: pointer;
+    padding: 0.35rem 0.65rem;
+    border-radius: var(--radius-sm);
+    transition: all 0.15s ease;
+}
+
+.filter-modal-close:hover {
+    color: var(--text-primary);
+    background: rgba(0, 0, 0, 0.08);
+}
+
+:root[data-theme="dark"] .filter-modal-close:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.filter-modal-body {
+    padding: 1.25rem 1.35rem;
+}
+
+.filter-modal-subtitle {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    margin: 0 0 1rem;
+    font-weight: 600;
 }
 
 .filter-pills-wrap {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.45rem;
-    align-items: center;
+    flex-direction: column;
+    gap: 0.55rem;
 }
 
 .filter-pill {
-    padding: 0.35rem 0.75rem;
+    padding: 0.65rem 1rem;
     border: 1px solid var(--border-color);
-    background: var(--bg-card);
-    border-radius: 20px;
-    font-size: 0.78rem;
+    background: var(--bg-card-subtle);
+    border-radius: var(--radius-sm);
+    font-size: 0.88rem;
     font-weight: 600;
     color: var(--text-secondary);
     cursor: pointer;
     transition: all 0.15s ease;
-    display: inline-flex;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
     user-select: none;
-    white-space: nowrap;
+    width: 100%;
+    text-align: left;
 }
 
 .filter-pill:hover {
-    border-color: var(--border-dark);
-    color: var(--text-primary);
-}
-
-.filter-pill .pill-count {
-    font-size: 0.72rem;
-    padding: 0.05rem 0.45rem;
-    border-radius: 10px;
-    background: rgba(0, 0, 0, 0.08);
-    margin-left: 0.35rem;
-    font-weight: 700;
-}
-
-:root[data-theme="dark"] .filter-pill .pill-count {
-    background: rgba(255, 255, 255, 0.12);
+    border-color: var(--gold);
+    background: var(--gold-light);
+    color: var(--gold);
 }
 
 .filter-pill.active {
-    background: var(--text-primary);
-    color: var(--bg-page);
-    border-color: var(--text-primary);
+    background: var(--gold);
+    color: #ffffff;
+    border-color: var(--gold);
+    font-weight: 700;
+}
+
+.filter-pill .pill-count {
+    font-size: 0.76rem;
+    padding: 0.12rem 0.6rem;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.08);
+    font-weight: 800;
+}
+
+:root[data-theme="dark"] .filter-pill .pill-count {
+    background: rgba(255, 255, 255, 0.15);
 }
 
 .filter-pill.active .pill-count {
-    background: rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.3);
     color: #ffffff;
+}
+
+@keyframes fadeInModal {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUpModal {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
 /* Quick Page Jump Strip */
@@ -1052,16 +1106,16 @@ code {
         </div>
     </header>
 
-    <!-- Navigation & Filters Panel -->
+    <!-- Navigation Panel -->
     <div class="nav-panel">
         
-        <!-- Search and JSON Status Bar -->
-        <div class="search-and-status-row">
-            <div class="search-box">
-                <span class="search-icon">🔍</span>
-                <input type="text" id="searchInput" class="search-input" placeholder="Search ref ID, page, text, sandhi, explanation (अन्वेषणम्)..." aria-label="Search changes">
-                <button id="clearSearchBtn" class="clear-search-btn" title="Clear search" style="display: none;">✕</button>
-            </div>
+        <!-- Utility Controls Bar (Filter Pop-up Trigger & JSON Status) -->
+        <div class="controls-bar-row">
+            <button id="openFilterModalBtn" class="filter-trigger-btn" aria-haspopup="dialog" aria-expanded="false" title="Open Category Filters (दोषभेदाः)">
+                <span class="filter-icon">🏷️</span>
+                <span class="filter-btn-text">दोषभेदाः (Filter):</span>
+                <span class="active-filter-badge" id="activeFilterBadge">सर्वविधाः (All)</span>
+            </button>
             
             <div class="json-controls">
                 <span class="source-status" id="sourceStatus">
@@ -1082,34 +1136,6 @@ code {
             </div>
         </div>
 
-        <!-- Filter Bar -->
-        <div class="filter-bar">
-            <span class="filter-label">Filter (दोषभेदाः):</span>
-            <div class="filter-pills-wrap" id="filterPillsContainer">
-                <button class="filter-pill active" data-filter="all" title="All Types in Range">
-                    सर्वविधाः (All) <span class="pill-count" id="countFilterAll">0</span>
-                </button>
-                <button class="filter-pill" data-filter="grammar" title="Pāṇinian Grammar & Sandhi">
-                    व्याकरणम् (Grammar &amp; Sandhi) <span class="pill-count" id="countFilterGrammar">0</span>
-                </button>
-                <button class="filter-pill" data-filter="typo" title="Typography & OCR Mending">
-                    मुद्रणदोषः (Typography &amp; OCR) <span class="pill-count" id="countFilterTypo">0</span>
-                </button>
-                <button class="filter-pill" data-filter="rule1" title="Danda Rules (Punctuation)">
-                    दण्ड-प्रयोगः (Punctuation) <span class="pill-count" id="countFilterRule1">0</span>
-                </button>
-                <button class="filter-pill" data-filter="rule2" title="Uniform Spacing Standard">
-                    रिक्तान्तरम् (Spacing) <span class="pill-count" id="countFilterRule2">0</span>
-                </button>
-                <button class="filter-pill" data-filter="rule3" title="Within-Verse Line Breaks">
-                    श्लोकपाद-विभाजनम् (Line Breaks) <span class="pill-count" id="countFilterRule3">0</span>
-                </button>
-                <button class="filter-pill" data-filter="rule4" title="Verse & Prose Separation">
-                    पद्य-गद्य-विवेकः (Verse &amp; Prose) <span class="pill-count" id="countFilterRule4">0</span>
-                </button>
-            </div>
-        </div>
-
         <!-- Dynamic Quick Page Jump Strip -->
         <div class="jump-strip" id="jumpStrip">
             <span class="jump-label">Jump to Page:</span>
@@ -1118,6 +1144,49 @@ code {
             </div>
         </div>
 
+    </div>
+
+    <!-- Filter Popup Modal -->
+    <div class="filter-modal-backdrop" id="filterModalBackdrop" style="display: none;" aria-hidden="true">
+        <div class="filter-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="filterModalTitle">
+            <div class="filter-modal-header">
+                <h3 id="filterModalTitle" class="filter-modal-title">🏷️ दोषभेदाः (Filter Categories)</h3>
+                <button type="button" class="filter-modal-close" id="closeFilterModalBtn" aria-label="Close Filter Modal">✕</button>
+            </div>
+            <div class="filter-modal-body">
+                <p class="filter-modal-subtitle">दोषभेदानुसारेण शोधनार्थं वर्गं चिनुत (Select a category):</p>
+                <div class="filter-pills-wrap" id="filterPillsContainer">
+                    <button class="filter-pill active" data-filter="all" title="All Types in Range">
+                        <span>सर्वविधाः (All Categories)</span>
+                        <span class="pill-count" id="countFilterAll">0</span>
+                    </button>
+                    <button class="filter-pill" data-filter="grammar" title="Pāṇinian Grammar & Sandhi">
+                        <span>व्याकरणम् (Grammar &amp; Sandhi)</span>
+                        <span class="pill-count" id="countFilterGrammar">0</span>
+                    </button>
+                    <button class="filter-pill" data-filter="typo" title="Typography & OCR Mending">
+                        <span>मुद्रणदोषः (Typography &amp; OCR)</span>
+                        <span class="pill-count" id="countFilterTypo">0</span>
+                    </button>
+                    <button class="filter-pill" data-filter="rule1" title="Danda Rules (Punctuation)">
+                        <span>दण्ड-प्रयोगः (Punctuation)</span>
+                        <span class="pill-count" id="countFilterRule1">0</span>
+                    </button>
+                    <button class="filter-pill" data-filter="rule2" title="Uniform Spacing Standard">
+                        <span>रिक्तान्तरम् (Spacing)</span>
+                        <span class="pill-count" id="countFilterRule2">0</span>
+                    </button>
+                    <button class="filter-pill" data-filter="rule3" title="Within-Verse Line Breaks">
+                        <span>श्लोकपाद-विभाजनम् (Line Breaks)</span>
+                        <span class="pill-count" id="countFilterRule3">0</span>
+                    </button>
+                    <button class="filter-pill" data-filter="rule4" title="Verse & Prose Separation">
+                        <span>पद्य-गद्य-विवेकः (Verse &amp; Prose)</span>
+                        <span class="pill-count" id="countFilterRule4">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Showing Count Display -->
@@ -6020,7 +6089,6 @@ let groups = []; // [{ key, label, count, pages }]
 let activeGroup = 'p1_10'; // default or first group
 let activeFilter = 'all';
 let activeJumpPage = 'all';
-let searchQuery = '';
 let currentTheme = localStorage.getItem('ppsm_theme') || 'auto';
 let currentViewMode = localStorage.getItem('ppsm_view_mode') || 'side-by-side';
 let currentFontSize = parseFloat(localStorage.getItem('ppsm_font_size') || '1.05');
@@ -6035,8 +6103,10 @@ const showingCountText = document.getElementById('showingCountText');
 const activeFiltersSummary = document.getElementById('activeFiltersSummary');
 const sourceStatus = document.getElementById('sourceStatus');
 const sourceStatusText = document.getElementById('sourceStatusText');
-const searchInput = document.getElementById('searchInput');
-const clearSearchBtn = document.getElementById('clearSearchBtn');
+const openFilterModalBtn = document.getElementById('openFilterModalBtn');
+const closeFilterModalBtn = document.getElementById('closeFilterModalBtn');
+const filterModalBackdrop = document.getElementById('filterModalBackdrop');
+const activeFilterBadge = document.getElementById('activeFilterBadge');
 const filterPills = document.querySelectorAll('.filter-pill');
 
 // Theme Management
@@ -6326,9 +6396,8 @@ function updateFilterCounts() {
 function filterAndDisplay() {
     const cards = cardsContainer.querySelectorAll('.change-card');
     let visibleCount = 0;
-    const query = searchQuery.trim().toLowerCase();
 
-    // Map items by id for fast search inspection
+    // Map items by id for fast category inspection
     const itemMap = new Map();
     allItems.forEach(it => itemMap.set(String(it.id), it));
 
@@ -6357,22 +6426,7 @@ function filterAndDisplay() {
             }
         }
 
-        // Live Search query check
-        let matchesSearch = true;
-        if (query && item) {
-            const idMatch = (item.ref_id || '').toLowerCase().includes(query) || String(item.id).includes(query);
-            const lineMatch = String(item.line_number || item.line || '').includes(query) || ('line ' + (item.line_number || item.line)).includes(query);
-            const pageMatch = (item.page || '').toLowerCase().includes(query);
-            const titleMatch = (item.title || '').toLowerCase().includes(query);
-            const catMatch = (item.category || '').toLowerCase().includes(query);
-            const phraseMatch = (item.search_phrase || '').toLowerCase().includes(query);
-            const beforeMatch = (item.before || '').toLowerCase().includes(query);
-            const afterMatch = (item.after || '').toLowerCase().includes(query);
-            const explMatch = (item.explanation || '').toLowerCase().includes(query);
-            matchesSearch = idMatch || lineMatch || pageMatch || titleMatch || catMatch || phraseMatch || beforeMatch || afterMatch || explMatch;
-        }
-
-        if (matchesGroup && matchesJump && matchesFilter && matchesSearch) {
+        if (matchesGroup && matchesJump && matchesFilter) {
             card.style.display = 'block';
             visibleCount++;
         } else {
@@ -6386,52 +6440,67 @@ function filterAndDisplay() {
     const groupLabel = gObj ? gObj.label : activeGroup;
 
     let summaryExtras = [];
-    if (activeFilter !== 'all') summaryExtras.push(`Filter: ${activeFilter}`);
+    if (activeFilter !== 'all') {
+        const activePill = document.querySelector(`.filter-pill[data-filter="${activeFilter}"]`);
+        const filterTitle = activePill ? (activePill.querySelector('span:first-child')?.textContent || activeFilter) : activeFilter;
+        summaryExtras.push(`Filter: ${filterTitle}`);
+    }
     if (activeJumpPage !== 'all') summaryExtras.push(`Page: ${activeJumpPage}`);
-    if (query) summaryExtras.push(`Search: "${query}"`);
 
     showingCountText.textContent = `दर्शितम्: ${visibleCount} / ${totalScope} स्थानानि (${groupLabel})`;
     activeFiltersSummary.textContent = summaryExtras.length > 0 ? `[${summaryExtras.join(' | ')}]` : '';
 }
 
-// Filter Pills Click Handling
+// Filter Pop-up Modal Controls
+function openFilterModal() {
+    if (!filterModalBackdrop) return;
+    filterModalBackdrop.style.display = 'flex';
+    filterModalBackdrop.setAttribute('aria-hidden', 'false');
+    if (openFilterModalBtn) openFilterModalBtn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeFilterModal() {
+    if (!filterModalBackdrop) return;
+    filterModalBackdrop.style.display = 'none';
+    filterModalBackdrop.setAttribute('aria-hidden', 'true');
+    if (openFilterModalBtn) openFilterModalBtn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+}
+
+if (openFilterModalBtn) openFilterModalBtn.addEventListener('click', openFilterModal);
+if (closeFilterModalBtn) closeFilterModalBtn.addEventListener('click', closeFilterModal);
+
+if (filterModalBackdrop) {
+    filterModalBackdrop.addEventListener('click', (e) => {
+        if (e.target === filterModalBackdrop) {
+            closeFilterModal();
+        }
+    });
+}
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && filterModalBackdrop && filterModalBackdrop.style.display === 'flex') {
+        closeFilterModal();
+    }
+});
+
+// Filter Pills Click Handling (inside pop-up modal)
 filterPills.forEach(pill => {
     pill.addEventListener('click', () => {
         filterPills.forEach(p => p.classList.remove('active'));
         pill.classList.add('active');
         activeFilter = pill.getAttribute('data-filter');
+        
+        // Update active filter badge on trigger button
+        if (activeFilterBadge) {
+            const textSpan = pill.querySelector('span:first-child');
+            activeFilterBadge.textContent = textSpan ? textSpan.textContent.trim() : activeFilter;
+        }
+
+        closeFilterModal();
         filterAndDisplay();
     });
-});
-
-// Live Search Input Handling
-let searchTimeout = null;
-searchInput.addEventListener('input', (e) => {
-    clearTimeout(searchTimeout);
-    searchQuery = e.target.value;
-    clearSearchBtn.style.display = searchQuery ? 'flex' : 'none';
-    searchTimeout = setTimeout(() => {
-        filterAndDisplay();
-    }, 120);
-});
-
-clearSearchBtn.addEventListener('click', () => {
-    searchInput.value = '';
-    searchQuery = '';
-    clearSearchBtn.style.display = 'none';
-    searchInput.focus();
-    filterAndDisplay();
-});
-
-// Keyboard shortcut: Escape clears search
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && document.activeElement === searchInput) {
-        searchInput.value = '';
-        searchQuery = '';
-        clearSearchBtn.style.display = 'none';
-        searchInput.blur();
-        filterAndDisplay();
-    }
 });
 
 // Copy Reference ID
