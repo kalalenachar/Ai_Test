@@ -260,40 +260,82 @@ body {
     gap: 0.75rem;
 }
 
-.filter-trigger-btn {
-    display: inline-flex;
+/* Direct Toolbar Filter Pills */
+.filter-pills-row {
+    display: flex;
     align-items: center;
-    gap: 0.55rem;
-    padding: 0.5rem 1rem;
-    background: var(--bg-card);
-    border: 1px solid var(--border-dark);
-    border-radius: var(--radius-sm);
-    font-size: 0.88rem;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-row-label {
+    font-size: 0.84rem;
     font-weight: 700;
     color: var(--text-primary);
-    cursor: pointer;
-    transition: all 0.15s ease;
-    box-shadow: var(--shadow-sm);
+    margin-right: 0.2rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
     user-select: none;
 }
 
-.filter-trigger-btn:hover {
+.filter-pill {
+    padding: 0.42rem 0.85rem;
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+    border-radius: var(--radius-sm);
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    user-select: none;
+    box-shadow: var(--shadow-sm);
+}
+
+.filter-pill:hover {
     border-color: var(--gold);
     background: var(--gold-light);
     color: var(--gold);
 }
 
-.filter-trigger-btn .filter-icon {
-    font-size: 1rem;
-}
-
-.filter-trigger-btn .active-filter-badge {
-    padding: 0.15rem 0.6rem;
-    border-radius: 12px;
+.filter-pill.active {
     background: var(--gold);
     color: #ffffff;
-    font-size: 0.76rem;
+    border-color: var(--gold);
     font-weight: 700;
+}
+
+.filter-pill.filter-pill-text.active {
+    background: #6b21a8;
+    color: #ffffff;
+    border-color: #6b21a8;
+}
+
+.filter-pill.filter-pill-layout.active {
+    background: #047857;
+    color: #ffffff;
+    border-color: #047857;
+}
+
+.filter-pill .pill-count {
+    font-size: 0.74rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.08);
+    font-weight: 800;
+}
+
+:root[data-theme="dark"] .filter-pill .pill-count {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.filter-pill.active .pill-count {
+    background: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
 }
 
 .json-controls {
@@ -756,19 +798,20 @@ body {
     white-space: nowrap;
 }
 
+/* Badges for 2 Doshabhedas */
+.badge-text { background: #f3e8ff; color: #6b21a8; border: 1px solid #d8b4fe; }
+.badge-layout { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+
+:root[data-theme="dark"] .badge-text { background: rgba(168, 85, 247, 0.2); color: #e9d5ff; border-color: #9333ea; }
+:root[data-theme="dark"] .badge-layout { background: rgba(16, 185, 129, 0.2); color: #a7f3d0; border-color: #10b981; }
+
+/* Legacy Fallbacks */
 .badge-rule1 { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
 .badge-rule2 { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
 .badge-rule3 { background: #f3e8ff; color: #6b21a8; border: 1px solid #e9d5ff; }
 .badge-rule4 { background: #ffedd5; color: #9a3412; border: 1px solid #fed7aa; }
 .badge-grammar { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
 .badge-typo { background: #fce7f3; color: #9d174d; border: 1px solid #fbcfe8; }
-
-:root[data-theme="dark"] .badge-rule1 { background: rgba(251, 191, 36, 0.18); color: #fde68a; border-color: #d97706; }
-:root[data-theme="dark"] .badge-rule2 { background: rgba(56, 189, 248, 0.18); color: #bae6fd; border-color: #0284c7; }
-:root[data-theme="dark"] .badge-rule3 { background: rgba(192, 132, 252, 0.18); color: #e9d5ff; border-color: #9333ea; }
-:root[data-theme="dark"] .badge-rule4 { background: rgba(251, 146, 60, 0.18); color: #fed7aa; border-color: #ea580c; }
-:root[data-theme="dark"] .badge-grammar { background: rgba(52, 211, 153, 0.18); color: #a7f3d0; border-color: #059669; }
-:root[data-theme="dark"] .badge-typo { background: rgba(244, 114, 182, 0.18); color: #fbcfe8; border-color: #db2777; }
 
 /* Copy Search Button */
 .copy-btn {
@@ -1109,13 +1152,23 @@ code {
     <!-- Navigation Panel -->
     <div class="nav-panel">
         
-        <!-- Utility Controls Bar (Filter Pop-up Trigger & JSON Status) -->
+        <!-- Utility Controls Bar (Direct Category Filters & JSON Status) -->
         <div class="controls-bar-row">
-            <button id="openFilterModalBtn" class="filter-trigger-btn" aria-haspopup="dialog" aria-expanded="false" title="Open Category Filters (दोषभेदाः)">
-                <span class="filter-icon">🏷️</span>
-                <span class="filter-btn-text">दोषभेदाः (Filter):</span>
-                <span class="active-filter-badge" id="activeFilterBadge">सर्वविधाः (All)</span>
-            </button>
+            <div class="filter-pills-row" id="filterPillsContainer" role="group" aria-label="दोषभेदाः (Filter Categories)">
+                <span class="filter-row-label">🏷️ दोषभेदाः:</span>
+                <button class="filter-pill active" data-filter="all" title="All Types in Range">
+                    <span>सर्वविधाः (All)</span>
+                    <span class="pill-count" id="countFilterAll">0</span>
+                </button>
+                <button class="filter-pill filter-pill-text" data-filter="text" title="Text Mistakes (पाठदोषाः: व्याकरणम्, सन्धिः, मुद्रणदोषः, पाठशुद्धिः)">
+                    <span>📜 पाठदोषः (Text)</span>
+                    <span class="pill-count" id="countFilterText">0</span>
+                </button>
+                <button class="filter-pill filter-pill-layout" data-filter="layout" title="Layout Mistakes (विन्यासदोषाः: दण्डप्रयोगः, रिक्तान्तरम्, श्लोकपाद-विभाजनम्, पद्य-गद्य-विवेकः)">
+                    <span>📐 विन्यासदोषः (Layout)</span>
+                    <span class="pill-count" id="countFilterLayout">0</span>
+                </button>
+            </div>
             
             <div class="json-controls">
                 <span class="source-status" id="sourceStatus">
@@ -1144,49 +1197,6 @@ code {
             </div>
         </div>
 
-    </div>
-
-    <!-- Filter Popup Modal -->
-    <div class="filter-modal-backdrop" id="filterModalBackdrop" style="display: none;" aria-hidden="true">
-        <div class="filter-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="filterModalTitle">
-            <div class="filter-modal-header">
-                <h3 id="filterModalTitle" class="filter-modal-title">🏷️ दोषभेदाः (Filter Categories)</h3>
-                <button type="button" class="filter-modal-close" id="closeFilterModalBtn" aria-label="Close Filter Modal">✕</button>
-            </div>
-            <div class="filter-modal-body">
-                <p class="filter-modal-subtitle">दोषभेदानुसारेण शोधनार्थं वर्गं चिनुत (Select a category):</p>
-                <div class="filter-pills-wrap" id="filterPillsContainer">
-                    <button class="filter-pill active" data-filter="all" title="All Types in Range">
-                        <span>सर्वविधाः (All Categories)</span>
-                        <span class="pill-count" id="countFilterAll">0</span>
-                    </button>
-                    <button class="filter-pill" data-filter="grammar" title="Pāṇinian Grammar & Sandhi">
-                        <span>व्याकरणम् (Grammar &amp; Sandhi)</span>
-                        <span class="pill-count" id="countFilterGrammar">0</span>
-                    </button>
-                    <button class="filter-pill" data-filter="typo" title="Typography & OCR Mending">
-                        <span>मुद्रणदोषः (Typography &amp; OCR)</span>
-                        <span class="pill-count" id="countFilterTypo">0</span>
-                    </button>
-                    <button class="filter-pill" data-filter="rule1" title="Danda Rules (Punctuation)">
-                        <span>दण्ड-प्रयोगः (Punctuation)</span>
-                        <span class="pill-count" id="countFilterRule1">0</span>
-                    </button>
-                    <button class="filter-pill" data-filter="rule2" title="Uniform Spacing Standard">
-                        <span>रिक्तान्तरम् (Spacing)</span>
-                        <span class="pill-count" id="countFilterRule2">0</span>
-                    </button>
-                    <button class="filter-pill" data-filter="rule3" title="Within-Verse Line Breaks">
-                        <span>श्लोकपाद-विभाजनम् (Line Breaks)</span>
-                        <span class="pill-count" id="countFilterRule3">0</span>
-                    </button>
-                    <button class="filter-pill" data-filter="rule4" title="Verse & Prose Separation">
-                        <span>पद्य-गद्य-विवेकः (Verse &amp; Prose)</span>
-                        <span class="pill-count" id="countFilterRule4">0</span>
-                    </button>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Showing Count Display -->
@@ -1243,11 +1253,7 @@ const showingCountText = document.getElementById('showingCountText');
 const activeFiltersSummary = document.getElementById('activeFiltersSummary');
 const sourceStatus = document.getElementById('sourceStatus');
 const sourceStatusText = document.getElementById('sourceStatusText');
-const openFilterModalBtn = document.getElementById('openFilterModalBtn');
-const closeFilterModalBtn = document.getElementById('closeFilterModalBtn');
-const filterModalBackdrop = document.getElementById('filterModalBackdrop');
-const activeFilterBadge = document.getElementById('activeFilterBadge');
-const filterPills = document.querySelectorAll('.filter-pill');
+const filterPillsContainer = document.getElementById('filterPillsContainer');
 
 // Theme Management
 function applyTheme(theme) {
@@ -1504,32 +1510,18 @@ function renderCards() {
     cardsContainer.innerHTML = html;
 }
 
-// Update Filter Pill Counts
+// Update Filter Pill Counts (2 Doshabhedas)
 function updateFilterCounts() {
     const scopeItems = allItems.filter(m => m.group === activeGroup);
     const total = scopeItems.length;
 
     const countFilterAll = document.getElementById('countFilterAll');
-    const countFilterGrammar = document.getElementById('countFilterGrammar');
-    const countFilterTypo = document.getElementById('countFilterTypo');
-    const countFilterRule1 = document.getElementById('countFilterRule1');
-    const countFilterRule2 = document.getElementById('countFilterRule2');
-    const countFilterRule3 = document.getElementById('countFilterRule3');
-    const countFilterRule4 = document.getElementById('countFilterRule4');
+    const countFilterText = document.getElementById('countFilterText');
+    const countFilterLayout = document.getElementById('countFilterLayout');
 
     if (countFilterAll) countFilterAll.textContent = total;
-    if (countFilterGrammar) countFilterGrammar.textContent = scopeItems.filter(m => {
-        const k = m.cat_keys || '';
-        return k.includes('grammar') || k.includes('rule5');
-    }).length;
-    if (countFilterTypo) countFilterTypo.textContent = scopeItems.filter(m => {
-        const k = m.cat_keys || '';
-        return k.includes('typo') || k.includes('rule6');
-    }).length;
-    if (countFilterRule1) countFilterRule1.textContent = scopeItems.filter(m => (m.cat_keys || '').includes('rule1')).length;
-    if (countFilterRule2) countFilterRule2.textContent = scopeItems.filter(m => (m.cat_keys || '').includes('rule2')).length;
-    if (countFilterRule3) countFilterRule3.textContent = scopeItems.filter(m => (m.cat_keys || '').includes('rule3')).length;
-    if (countFilterRule4) countFilterRule4.textContent = scopeItems.filter(m => (m.cat_keys || '').includes('rule4')).length;
+    if (countFilterText) countFilterText.textContent = scopeItems.filter(m => (m.cat_keys || '') === 'text' || (m.badge_class || '').includes('text')).length;
+    if (countFilterLayout) countFilterLayout.textContent = scopeItems.filter(m => (m.cat_keys || '') === 'layout' || (m.badge_class || '').includes('layout')).length;
 }
 
 // Filter and Display Active Cards
@@ -1554,17 +1546,8 @@ function filterAndDisplay() {
         // Jump page check
         const matchesJump = (activeJumpPage === 'all') || (cardPage === activeJumpPage);
 
-        // Category / Rule filter check
-        let matchesFilter = (activeFilter === 'all');
-        if (!matchesFilter) {
-            if (activeFilter === 'grammar') {
-                matchesFilter = cardCat.includes('grammar') || cardCat.includes('rule5');
-            } else if (activeFilter === 'typo') {
-                matchesFilter = cardCat.includes('typo') || cardCat.includes('rule6');
-            } else {
-                matchesFilter = cardCat.includes(activeFilter);
-            }
-        }
+        // Category filter check (all, text, layout)
+        let matchesFilter = (activeFilter === 'all') || (cardCat === activeFilter);
 
         if (matchesGroup && matchesJump && matchesFilter) {
             card.style.display = 'block';
@@ -1591,57 +1574,19 @@ function filterAndDisplay() {
     activeFiltersSummary.textContent = summaryExtras.length > 0 ? `[${summaryExtras.join(' | ')}]` : '';
 }
 
-// Filter Pop-up Modal Controls
-function openFilterModal() {
-    if (!filterModalBackdrop) return;
-    filterModalBackdrop.style.display = 'flex';
-    filterModalBackdrop.setAttribute('aria-hidden', 'false');
-    if (openFilterModalBtn) openFilterModalBtn.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
-}
-
-function closeFilterModal() {
-    if (!filterModalBackdrop) return;
-    filterModalBackdrop.style.display = 'none';
-    filterModalBackdrop.setAttribute('aria-hidden', 'true');
-    if (openFilterModalBtn) openFilterModalBtn.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
-}
-
-if (openFilterModalBtn) openFilterModalBtn.addEventListener('click', openFilterModal);
-if (closeFilterModalBtn) closeFilterModalBtn.addEventListener('click', closeFilterModal);
-
-if (filterModalBackdrop) {
-    filterModalBackdrop.addEventListener('click', (e) => {
-        if (e.target === filterModalBackdrop) {
-            closeFilterModal();
-        }
+// Direct Filter Pills Click Handling
+function initFilterPills() {
+    const pills = document.querySelectorAll('.filter-pill');
+    pills.forEach(pill => {
+        pill.addEventListener('click', () => {
+            document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+            activeFilter = pill.getAttribute('data-filter');
+            filterAndDisplay();
+        });
     });
 }
-
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && filterModalBackdrop && filterModalBackdrop.style.display === 'flex') {
-        closeFilterModal();
-    }
-});
-
-// Filter Pills Click Handling (inside pop-up modal)
-filterPills.forEach(pill => {
-    pill.addEventListener('click', () => {
-        filterPills.forEach(p => p.classList.remove('active'));
-        pill.classList.add('active');
-        activeFilter = pill.getAttribute('data-filter');
-        
-        // Update active filter badge on trigger button
-        if (activeFilterBadge) {
-            const textSpan = pill.querySelector('span:first-child');
-            activeFilterBadge.textContent = textSpan ? textSpan.textContent.trim() : activeFilter;
-        }
-
-        closeFilterModal();
-        filterAndDisplay();
-    });
-});
+initFilterPills();
 
 // Copy Reference ID
 function copyRefId(code, el) {
