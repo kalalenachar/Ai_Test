@@ -49,9 +49,9 @@
     --focus-ring: 0 0 0 3px rgba(59, 130, 246, 0.35);
 }
 
-/* System Dark Theme Auto Detection */
+/* System Dark Theme Auto Detection (Always Auto based on OS) */
 @media (prefers-color-scheme: dark) {
-    :root[data-theme="auto"] {
+    :root, :root[data-theme="auto"], :root[data-theme="dark"] {
         --bg-page: #0b1120;
         --bg-card: #131d33;
         --bg-card-subtle: #1a2642;
@@ -1503,14 +1503,7 @@ code {
 
                 <!-- 2. Display & View Mode -->
                 <div class="settings-group">
-                    <h4 class="settings-group-title">🌓 दृश्यव्यवस्था (Theme &amp; Diff View)</h4>
-                    <div class="settings-row" style="margin-bottom: 0.75rem;">
-                        <span class="settings-label-text">वर्णव्यवस्था (Theme):</span>
-                        <button id="themeToggleBtn" class="action-btn" title="Toggle Theme (Auto / Light / Dark)" aria-label="Toggle Theme">
-                            <span id="themeIcon">🌓</span>
-                            <span id="themeLabel">Auto</span>
-                        </button>
-                    </div>
+                    <h4 class="settings-group-title">↔️ अन्तरप्रदर्शनम् (Diff View Layout)</h4>
                     <div class="settings-row">
                         <span class="settings-label-text">पाठसंशोधन-दृश्यम् (Diff View Mode):</span>
                         <button id="viewModeToggleBtn" class="action-btn" title="Toggle Diff View Layout" aria-label="Toggle Diff View Layout">
@@ -1569,7 +1562,6 @@ let groups = []; // [{ key, label, count, pages }]
 let activeGroup = 'p1_10'; // default or first group
 let activeFilter = 'all';
 let activeJumpPage = 'all';
-let currentTheme = localStorage.getItem('ppsm_theme') || 'auto';
 let currentViewMode = localStorage.getItem('ppsm_view_mode') || 'side-by-side';
 let currentFontSize = parseFloat(localStorage.getItem('ppsm_font_size') || '1.05');
 
@@ -1585,38 +1577,16 @@ const sourceStatus = document.getElementById('sourceStatus');
 const sourceStatusText = document.getElementById('sourceStatusText');
 const filterPillsContainer = document.getElementById('filterPillsContainer');
 
-// Theme Management
-function applyTheme(theme) {
-    currentTheme = theme;
-    localStorage.setItem('ppsm_theme', theme);
-    document.documentElement.setAttribute('data-theme', theme);
-    
-    const themeIcon = document.getElementById('themeIcon');
-    const themeLabel = document.getElementById('themeLabel');
-    if (theme === 'dark') {
-        themeIcon.textContent = '🌙';
-        themeLabel.textContent = 'Dark';
-    } else if (theme === 'light') {
-        themeIcon.textContent = '☀️';
-        themeLabel.textContent = 'Light';
-    } else {
-        themeIcon.textContent = '🌓';
-        themeLabel.textContent = 'Auto';
-    }
+// Pure System Auto Theme (Always follows system OS prefers-color-scheme)
+try { localStorage.removeItem('ppsm_theme'); } catch(e) {}
+function syncSystemTheme() {
+    const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
 }
-
-document.getElementById('themeToggleBtn').addEventListener('click', () => {
-    if (currentTheme === 'auto') applyTheme('light');
-    else if (currentTheme === 'light') applyTheme('dark');
-    else applyTheme('auto');
-});
-
-// Listen to OS theme changes when in auto mode
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-    if (currentTheme === 'auto') {
-        document.documentElement.setAttribute('data-theme', 'auto');
-    }
-});
+syncSystemTheme();
+if (window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', syncSystemTheme);
+}
 
 // View Mode (Side-by-Side vs Stacked Diff)
 function applyViewMode(mode) {
@@ -2098,7 +2068,6 @@ document.getElementById('jsonFileInput').addEventListener('change', function(e) 
 });
 
 // Initialize Settings and Load Data
-applyTheme(currentTheme);
 applyViewMode(currentViewMode);
 applyFontSize(currentFontSize);
 initializeData();
