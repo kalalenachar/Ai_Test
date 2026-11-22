@@ -8,7 +8,7 @@ This document establishes the mandatory protocol for extracting, verifying, and 
 
 > [!CAUTION]
 > **NEVER COUNT RAW RTF SOURCE CODE LINES!**
-> Reading `DHARMAKOOTA YUDDHA KANDA for ai test.rtf.doc` as plain text in a code editor or terminal produces completely invalid line numbers.
+> Reading `DHARMAKOOTA YUDDHA KANDA for ai test.rtf 1 To 30.doc` as plain text in a code editor or terminal produces completely invalid line numbers.
 
 1. **Why Raw RTF Line Counting Fails**:
    - The first 20 lines of the `.rtf` file contain raw formatting definitions, font tables, and style dictionaries (`{\rtf1\ansi... \fonttbl... \stylesheet...}`).
@@ -16,7 +16,7 @@ This document establishes the mandatory protocol for extracting, verifying, and 
    - Counting raw lines mistakenly shifts Page 1 line numbers by +20 (e.g. reporting `युद्धकाण्डः` as Line 23 instead of **Line 3**), and shifts subsequent pages by hundreds of lines.
 
 2. **The True Standard**:
-   - Scholars, editors, and proofreaders view `DHARMAKOOTA YUDDHA KANDA for ai test.rtf.doc` in **LibreOffice Writer** or **Microsoft Word** with **Line Numbering enabled** (`Tools` ➔ `Line Numbering`).
+   - Scholars, editors, and proofreaders view `DHARMAKOOTA YUDDHA KANDA for ai test.rtf 1 To 30.doc` in **LibreOffice Writer** or **Microsoft Word** with **Line Numbering enabled** (`Tools` ➔ `Line Numbering`).
    - In this mode, line numbers are **Per-Page**, restarting from **Line 1** at the top of each page up to roughly **17–21 lines** per page.
 
 ---
@@ -67,13 +67,13 @@ Avoid GUI lock conflicts and snap AppArmor confinement by using the snap-accessi
 ```bash
 /snap/bin/libreoffice -env:UserInstallation=file:///home/samsho/snap/libreoffice/common/export_profile \
   --headless --convert-to pdf --outdir /home/samsho/Downloads \
-  "/home/samsho/Downloads/PPSM/DHARMAKOOTA YUDDHA KANDA for ai test.rtf.doc"
+  "/home/samsho/Downloads/PPSM/DHARMAKOOTA YUDDHA KANDA for ai test.rtf 1 To 30.doc"
 ```
 
 ### Step 2: Extract Layout Lines via `pdftotext`
 Use `pdftotext -layout` to preserve exact lines and page breaks:
 ```bash
-pdftotext -layout -f 1 -l 30 "/tmp/DHARMAKOOTA YUDDHA KANDA for ai test.rtf.pdf" extracted_pages.txt
+pdftotext -layout -f 1 -l 30 "/tmp/DHARMAKOOTA YUDDHA KANDA for ai test.rtf 1 To 30.pdf" extracted_pages.txt
 ```
 
 ### Step 3: Match Against changes_data.json

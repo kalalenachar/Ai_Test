@@ -1,0 +1,132 @@
+I'll start by reading the file-reading skill so I can open this document properly.
+
+I'm reading the whole document through, about a third done so far, and I'll check the RTF formatting codes after that. Continuing with the next section.
+
+I've now read the full text. Next I'll inspect the RTF's formatting layer (fonts, sizes, alignment, styles) and run pattern checks for DTP errors.
+
+Status: I've mapped the paragraph styles and bold usage, and next I'm running character-level checks (spacing, danda, brackets, stray symbols) before I write up the findings.
+
+My parser was swallowing the footnotes into the body (that's where the `?????` came from). Let me re-parse and capture footnotes separately, since they'll matter for the review.
+
+Status: I've finished the text and formatting scans. I'm now checking a few doubtful Rāmāyaṇa readings against published editions so I don't flag valid variants as errors.
+
+I read all 380 paragraphs of the file (Sarga 1 through part of Sarga 4) and checked both the Sanskrit and the RTF formatting codes. The file is actually RTF saved with a `.doc` extension. I could not render it with the AdishilaDev font, so line-wrap, overflow and glyph problems are not checked.
+
+**How to read this:** "¶" is the Enter-key paragraph number counting the title line as ¶1. Sarga 1 is ¶1–21 (no heading), Sarga 2 is ¶22–74, Sarga 3 is ¶75–133, and Sarga 4 starts at ¶134. [H] means a definite error, [M] a probable one, and [C] means compare with your source text. Many [M] and [C] items could be variant readings rather than mistakes.
+
+I cross-checked a few doubtful readings online. One published Sanskrit text of Yuddha 4.33 reads Jambha, while another edition reads Rambha. Neither has "Dambha", which is why I flagged ¶252. For ¶61, the Sarga 2 text on valmikiramayan.net has the accusative forms (buddhim … sarvārtha-nāśanīm).
+
+## A. Vyākaraṇa, spelling and text errors
+
+| ¶ | In file | Should be | Note |
+|---|---|---|---|
+| 7 | नियुक्तःसन् | नियुक्तः सन् | missing space [H] |
+| 15 | मध्यमेषु च मध्यमाम् | …मध्यमान् | feminine singular does not agree with उत्तमान्/जघन्यान् [H] |
+| 25 | वाग्मिरसदेतद् | वाग्भिरसदेतद् | instrumental plural of वाच् [H] |
+| 25 | द्रोणे (addressing Aśvatthāman) | द्रौणे | vocative of द्रौणि [M] |
+| 35 | न मुह्यन्तीदृशी सन्तो | ईदृशे / ईदृशाः | ईदृशी agrees with nothing [C] |
+| 39 | गतासूनगतासूश्च | गतासूनगतासूंश्च | Gītā 2.11, missing anusvāra [H] |
+| 44 | तव अनुत्साहविषये | तत्र अनुत्साहविषये | [H] |
+| 49 | प्रयतेत् बुधः | प्रयतेत बुधः | ātmanepada optative [M] |
+| 57 | संगृहीतास्त्यक्षन्ति | त्यक्ष्यन्ति / त्यजन्ति | त्यक्षन्ति is not a valid form [M] |
+| 60 | बाहनानि | वाहनानि | [H] |
+| 61 | विक्लवा बुद्धी … सर्वविनाशिनी | बुद्धिं … (…नाशनीम्) | बुद्धी is not valid here; fix the case endings [H] |
+| 67, 306, 331, 350 | घूमाय, उल्काशनिघूमाद्यैः, घूमनिर्धात, घूमार्चिर्घूमकेतुता | धूम… | systematic ध→घ [H] |
+| 69 | अम्भोघेः | अम्भोधेः | [H] |
+| 79 | तत्वेन | तत्त्वेन | [H] |
+| 90, 99 | शतध्न्यः | शतघ्न्यः | your own ¶113 has शतघ्नीः correctly [H] |
+| 93 / 102 | परिधा / दृढप्राकारपरिधं | परिखा / …परिखं | परिघ is a bar, परिखा is a moat [M] |
+| 105 | नरनागाश्व | नरनागाश्वम् | neuter agreement [M] |
+| 108 / 110 | शूरान्यजन… / वश्यमात्यबलो | शूरार्यजन…? / वश्यामात्यबलो | missing अ+अ sandhi in the second [M/C] |
+| 113 | स्वाधीनाश्चैवकारयेत् | …चैव कारयेत् | words run together [H] |
+| 142 | लङ्काऽऽग्नेय… | लङ्काग्नेय… | ऽऽ is non-standard [M] |
+| 147 | विचारेण प्रस्थितस्य फलावाप्तिर्घुणाक्षर… | अविचारेण | contradicts the cited verse "अतर्किते…" [M] |
+| 153 / 155 | वर्ज्याणि / प्रोक्तनि | वर्ज्यानि / प्रोक्तानि | no retroflexion after ज्; missing ā [H] |
+| 156 | साघनतारत्वात् | साधनतारत्वात् | [H] |
+| 162 | द्वितीया दशम्योः, सप्तमी पौर्णमास्योः | joined compounds | compound broken by space [M] |
+| 167 | यमदिशभियान्ना… | यमदिशमियान्ना… | भ/म [M] |
+| 169 | धुवम् | ध्रुवम् | [H] |
+| 172 | उत्पन्नम्य | उत्पन्नस्य | [H] |
+| 177 | घनं … सघनक्षयम् | धनं … सधनक्षयम् | [H] |
+| 178 | स्त्र्याय कर्म | त्र्यायकर्म | stray स् [M] |
+| 192 | वृतरश्शतसहस्रेण | वृतश्शत… / वृतः शत… | stray र [H] |
+| 203 | विध्यमान | विद्यमान | [H] |
+| 208 | कर्वीत | कुर्वीत | [H] |
+| 213 | अनिस्राव्यं | अनिस्स्राव्यं / अनिःस्राव्यं | sandhi inconsistent with निस्स्रावयेत् in the line before [M] |
+| 236 | पार्वमृषभो | पार्श्वम्… | [H] |
+| 238 | बलमर्घ्येऽहं | बलमध्येऽहं | [H] |
+| 239 | हनूमन्तं ऐरावतम् | हनूमन्तमैरावतम् | म् before a vowel must join [M] |
+| 240 | वेगदर्शी व वानरः | …च वानरः | [M] |
+| 250 | संहृतान् योधयेत्कल्पान्कामान् | Manu 7.191 reads संहतान् योधयेदल्पान् कामम् | [C] |
+| 252 | दम्भोऽथ रभसः | जम्भोऽथ / रम्भोऽथ | दम्भ is in neither edition [M] |
+| 264 | बलाहका स्निग्धरुचो | बलाहकाः स्निग्ध… | visarga wrongly dropped [M] |
+| 274 | वक्त्त्रमण्डलः | वक्त्रमण्डलः | extra त् [H] |
+| 283 | त्रिविघमिह | त्रिविधमिह | [H] |
+| 288 / 291 | चतुश्शानके / भारद्वाजजवात्स्ययोः | unclear / भारद्वाजवात्स्ययोः | [C] / [M] |
+| 309 | विवर्णा स्वल्पा | विवर्णाः स्वल्पा | [M] |
+| 333 | सुवृष्टिभयकारकः | अवृष्टि…? | sense problem [C] |
+| 345 | भूमयेद्वा | भ्रमयेद्वा | no such verb form [M] |
+| 356 | धोरां वा पदमृच्छति | घोरां वापदमृच्छति | two errors: ध for घ, and वा+आपदम् not joined [H] |
+| 363–364 | शब्दास्पर्श तथा गन्धा; धैर्यं च विंशतेयोधान् | garbled | e.g. शब्दाः स्पर्शास्तथा…, विशति योधान् [C] |
+| 370, 372 | दृष्टाः प्रमुदिताः; ते दृष्टमनसः | हृष्टाः; हृष्टमनसः | ह→द; your ¶374 has हृष्टा correctly [H] |
+| 373 | सास्मयाति | सा स्म याति | [M] |
+| 374 | …॥ षेण व्यथते वज्रं | text lost | the lead-in "तथा च …-" and the first part of the quote are missing [H] |
+| 380 | हितान् स्वकामान् नयन्त्येव | स्वकान् मानयन्त्येव | echoes the verse [M] |
+| 295 | इति । सूचितम् | इति सूचितम् | stray danda [H] |
+| 300 / 302 | सदृशःस्फटिकाभः / ऋषि विषये | space after visarga / ऋषिविषये | [H] |
+| 28 / 54 | आत्मदूषणीम् / सुसन्दृष्टाः | दूषिणीम्? / सुसंहृष्टाः? | [C] |
+
+**Orthographic inconsistencies:**
+- **Anusvāra vs nasal conjunct.** The document mostly uses full nasal conjuncts (सन्तापं, सङ्क्रम) but has anusvāra outliers: पंडित, अकंप्यो, आरंभणीय, क्रोधमालंब (next to शोकमालम्ब्य), जांबवत् (vs जाम्बवान्), संचय, संगृहीता, अस्तंगते, सूर्यांगारक.
+- **Avagraha after ā.** It appears in 11 places (मनसाऽपि, तथाऽपि, वाऽपि…) but not in others. The same verse appears as उल्कयाभिहता in ¶303 and उल्कयाऽभिहता in ¶315.
+- **Visarga convention.** The text mixes the assimilated style (शोकस्सर्वार्थ-, ऋषयस्सर्व-, दिशस्सर्वा) with the plain style (शोकः शौर्य-, ऋषयः सर्व-).
+- **Name and word variants.** हनुमता/हनूमता, उत्तराफल्गुनी/उत्तरफल्गुनी.
+- **Hiatus after anusvāra** at 7 places (e.g. परिनिष्ठितायां आधेय…, हर्षादिकं आगामि…).
+- **Compounds split by spaces** in verse (अमल विपुल वक्त्र…, शीत काननवारिणा).
+
+## B. Formatting and DTP errors
+
+**Page setup and global settings**
+- No header, footer or folio (page number) anywhere. The top margin is 3.5 cm but the bottom is 1.5 cm, with no mirror margins. The page is A5 (14.8×21 cm).
+- All 387 text runs are tagged English (US), not Sanskrit or Hindi. Automatic hyphenation is switched on for every paragraph, and manual hyphens are also typed into the text.
+- Widow/orphan control is off, and there is no keep-with-next. Lead-in lines such as "तथा च राजधर्मे-" can be stranded at a page foot.
+- The footnote, headings and body all use the same 16 pt font.
+
+**Styles and hierarchy**
+- The title block (¶1–3) is body style with local overrides. There are no Title or Heading styles, and the kāṇḍa name is the same size and weight as body text.
+- The sarga headings (¶22, 75, 134) are justified body paragraphs with a first-line indent. Only the word is bold, not the "॥", and they have no space before. The heading "प्रथमे ॥" is missing before ¶5.
+- "shloka" and "shloka copy" differ only in bold, and many paragraphs override bold locally instead of using the right style.
+
+**Style misapplication**
+- About 85 verse quotations from other works are set as justified, indented body text instead of the quotation-verse style: ¶15–16, 39, 82–85, 138–141, 148–155, 163–184, 190–191, 197–200, 224–229, 250, 264–292, 300–301, 310, 359–360, 367–368 and others.
+- Quotations from other works are set bold like Rāmāyaṇa verses (¶13, 20, 21, 25, 81).
+- Rāmāyaṇa and quoted verses are set unbolded (¶116–121, 123, 145). ¶121 is a Rāmāyaṇa verse.
+- Commentary is merged into bold verse paragraphs with a soft line break (¶24, 25, 128, 241, 374, 81). In ¶194 a Rāmāyaṇa verse is merged into a Kāmandaka quote.
+
+**Verse layout**
+- Some verses are one paragraph joined by soft returns, while others have each half-verse as a separate paragraph with 5.65 pt after it (¶101–110, 242–249). One verse is split across three paragraphs (¶173–175).
+- Tabs are used for indents in ¶15, 16 and 39, and thin spaces (U+2006) are used as manual spacing in ¶14 and 20. Ninety paragraph lines have a space before the line break and 226 paragraphs end with a trailing space.
+- Verse-ending marks are inconsistent. Doubled dandas appear in ¶16 and 200, an ASCII "|" in ¶44, 178 and 193, and the digit "1" for "॥" in ¶262. ¶253 ends with "।" where "॥" is expected, and ¶164 has "॥ इति ॥".
+- The danda is attached to the preceding word in 18 places, and "सूचितम् ॥" (7 times) is mixed with "सूचितम् ।" (21 times).
+- "इति" with no closing danda appears in ¶191 and 301, and in total "इति ।" ×60, "इति" ×15, "इति।" ×2.
+- ASCII ":" stands in for the visarga in 10 places. There is also a space before a colon in ¶166 and a stray "ततः," with spaces in ¶14.
+- The dash before quotations is inconsistent, with hyphen, en dash and em dash, and with or without spaces: "-", " -", "- ", "–", "—".
+- There is a manual hyphen plus soft break inside a word in ¶4 (भाविसेना-⏎नयन…). Stray hyphens also appear in ¶4 (शत्रुवध- राज्य…) and ¶12 (लङ्कापुरी-दहन).
+
+**Editorial markup and structure**
+- Unresolved correction markup is left in the text:
+  - ¶23: (रु)[र]
+  - ¶169: (को)[सो]
+  - ¶171: [ति]
+  - ¶177: [ध]
+  - ¶188: नय(नं)
+  - ¶204: "(घोषान्) (योधान् ]", with mismatched brackets
+  - ¶210: (ये)(पे)
+- Duplicated blocks:
+  - ¶156–158 and 159–161 repeat the verse "शतमखेन्दु…" and the line "अथ शूलनक्षत्राणि".
+  - ¶303–304 and 315–316 repeat the verse "उल्कयाभिहता…".
+  - ¶51 and ¶129 carry near-identical "न शोचन्" verses.
+- The text ends mid-citation at "तथा च राजधर्मे-" with no verse after it.
+- The only footnote (¶174) is set at body size, with a "." after the number, an unspaced "…स्था।" at the end and garbled text ("शुभफलप्रदस्था"). The other variant readings are inline brackets rather than footnotes.
+
+I can turn this into a Word or Excel proof-sheet, or a corrected copy of the text with each change marked.
