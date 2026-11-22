@@ -321,6 +321,12 @@ body {
     border-color: #047857;
 }
 
+.filter-pill.filter-pill-preserved.active {
+    background: #d97706;
+    color: #ffffff;
+    border-color: #d97706;
+}
+
 .filter-pill .pill-count {
     font-size: 0.74rem;
     padding: 0.1rem 0.5rem;
@@ -970,6 +976,98 @@ body {
 :root[data-theme="dark"] .badge-text { background: rgba(168, 85, 247, 0.2); color: #e9d5ff; border-color: #9333ea; }
 :root[data-theme="dark"] .badge-layout { background: rgba(16, 185, 129, 0.2); color: #a7f3d0; border-color: #10b981; }
 
+/* Big Badge for Textual Preservation (पाठसंरक्षणम्) */
+.badge-preservation-big {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    color: #92400e;
+    border: 1.5px solid #d97706;
+    font-size: 0.84rem;
+    font-weight: 800;
+    padding: 0.2rem 0.75rem;
+    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    box-shadow: 0 1px 3px rgba(217, 119, 6, 0.25);
+    letter-spacing: 0.02em;
+    vertical-align: middle;
+}
+
+:root[data-theme="dark"] .badge-preservation-big {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.28) 0%, rgba(217, 119, 6, 0.4) 100%);
+    color: #fde68a;
+    border: 1.5px solid #f59e0b;
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+}
+
+.card-preserved {
+    border-left: 4.5px solid #d97706 !important;
+}
+
+.diff-panel-preserved {
+    border-color: rgba(217, 119, 6, 0.4) !important;
+}
+
+.ins-preserved {
+    background: rgba(245, 158, 11, 0.18) !important;
+    color: #b45309 !important;
+    border-bottom: 2px solid #f59e0b !important;
+    font-weight: bold;
+    padding: 0 2px;
+}
+
+:root[data-theme="dark"] .ins-preserved {
+    background: rgba(245, 158, 11, 0.28) !important;
+    color: #fde68a !important;
+    border-bottom-color: #fbbf24 !important;
+}
+
+.preservation-callout {
+    margin-top: 0.85rem;
+    padding: 0.75rem 1rem;
+    background: rgba(245, 158, 11, 0.08);
+    border: 1.5px solid rgba(245, 158, 11, 0.3);
+    border-radius: var(--radius-sm);
+    font-size: 0.92rem;
+    color: var(--text-primary);
+}
+
+:root[data-theme="dark"] .preservation-callout {
+    background: rgba(245, 158, 11, 0.12);
+    border-color: rgba(245, 158, 11, 0.4);
+}
+
+.preservation-callout-header {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-weight: 700;
+    color: #b45309;
+    margin-bottom: 0.35rem;
+    font-size: 0.9rem;
+}
+
+:root[data-theme="dark"] .preservation-callout-header {
+    color: #fbbf24;
+}
+
+.preservation-callout-body {
+    line-height: 1.55;
+    color: var(--text-primary);
+}
+
+.settings-active-pill.badge-preservation-pill {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #f59e0b;
+}
+
+:root[data-theme="dark"] .settings-active-pill.badge-preservation-pill {
+    background: rgba(245, 158, 11, 0.25);
+    color: #fde68a;
+    border-color: #f59e0b;
+}
+
 /* Legacy Fallbacks */
 .badge-rule1 { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
 .badge-rule2 { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
@@ -1373,6 +1471,10 @@ code {
                             <span>📐 विन्यासदोषः (Layout)</span>
                             <span class="pill-count" id="countFilterLayout">0</span>
                         </button>
+                        <button class="filter-pill filter-pill-preserved" data-filter="preserved" title="Preserved Readings (पाठसंरक्षणम्: आर्षप्रयोगाः, न्यूनविश्वास-संरक्षणम्)">
+                            <span>🛡️ पाठसंरक्षणम् (Preserved)</span>
+                            <span class="pill-count" id="countFilterPreserved">0</span>
+                        </button>
                     </div>
                 </div>
 
@@ -1674,7 +1776,7 @@ function renderCards() {
         const refCode = it.ref_id || ('#' + idFormatted);
         
         html += `
-        <article class="change-card" id="card-${it.id}" data-id="${it.id}" data-group="${it.group}" data-page="${it.page}" data-category="${it.cat_keys || ''}">
+        <article class="change-card ${it.is_preserved ? 'card-preserved' : ''}" id="card-${it.id}" data-id="${it.id}" data-group="${it.group}" data-page="${it.page}" data-category="${it.cat_keys || ''}">
             <div class="card-header">
                 <div class="card-meta-left">
                     <span class="card-num" onclick="copyRefId('${refCode}', this)" title="Click to copy ${refCode}">${refCode}</span>
@@ -1682,6 +1784,7 @@ function renderCards() {
                     <span class="line-tag" title="${it.page}, Line ${it.line || it.line_number}">Line ${it.line || it.line_number}</span>
                     <span class="card-title-text">${it.title}</span>
                     <span class="category-tag ${it.badge_class || 'badge-grammar'}">${it.badge_label || it.category}</span>
+                    ${it.is_preserved ? `<span class="badge-preservation-big">🛡️ पाठसंरक्षणम्</span>` : ''}
                 </div>
                 <button class="copy-btn" onclick="copySearch('${searchEscaped}', this)">
                     <span>📋 Copy Search Text</span>
@@ -1695,13 +1798,24 @@ function renderCards() {
                         </div>
                         <div class="diff-content">${it.before}</div>
                     </div>
-                    <div class="diff-panel after">
+                    <div class="diff-panel after ${it.is_preserved ? 'diff-panel-preserved' : ''}">
                         <div class="diff-panel-label">
-                            <span>🟢</span> संशोधितपाठः (Emended / Current)
+                            <span>${it.is_preserved ? '🛡️' : '🟢'}</span> ${it.is_preserved ? 'संरक्षितपाठः (Preserved Reading)' : 'संशोधितपाठः (Emended / Current)'}
                         </div>
                         <div class="diff-content">${it.after}</div>
                     </div>
                 </div>
+                ${it.is_preserved ? `
+                <div class="preservation-callout">
+                    <div class="preservation-callout-header">
+                        <span class="preservation-icon">🛡️</span>
+                        <strong>पाठसंरक्षण-हेतुः (Preservation Rationale / Reason):</strong>
+                    </div>
+                    <div class="preservation-callout-body">
+                        ${it.preservation_reason || it.explanation}
+                    </div>
+                </div>
+                ` : ''}
                 <div class="rationale-box">
                     <div class="rationale-icon">📖</div>
                     <div class="rationale-text">
@@ -1715,7 +1829,7 @@ function renderCards() {
     cardsContainer.innerHTML = html;
 }
 
-// Update Filter Pill Counts (2 Doshabhedas)
+// Update Filter Pill Counts (2 Doshabhedas + Preserved)
 function updateFilterCounts() {
     const scopeItems = allItems.filter(m => m.group === activeGroup);
     const total = scopeItems.length;
@@ -1723,10 +1837,12 @@ function updateFilterCounts() {
     const countFilterAll = document.getElementById('countFilterAll');
     const countFilterText = document.getElementById('countFilterText');
     const countFilterLayout = document.getElementById('countFilterLayout');
+    const countFilterPreserved = document.getElementById('countFilterPreserved');
 
     if (countFilterAll) countFilterAll.textContent = total;
     if (countFilterText) countFilterText.textContent = scopeItems.filter(m => (m.cat_keys || '') === 'text' || (m.badge_class || '').includes('text')).length;
     if (countFilterLayout) countFilterLayout.textContent = scopeItems.filter(m => (m.cat_keys || '') === 'layout' || (m.badge_class || '').includes('layout')).length;
+    if (countFilterPreserved) countFilterPreserved.textContent = scopeItems.filter(m => m.is_preserved).length;
 }
 
 // Filter and Display Active Cards
@@ -1751,8 +1867,9 @@ function filterAndDisplay() {
         // Jump page check
         const matchesJump = (activeJumpPage === 'all') || (cardPage === activeJumpPage);
 
-        // Category filter check (all, text, layout)
-        let matchesFilter = (activeFilter === 'all') || (cardCat === activeFilter);
+        // Category filter check (all, text, layout, preserved)
+        let matchesFilter = (activeFilter === 'all') || 
+                            (activeFilter === 'preserved' ? Boolean(item && item.is_preserved) : (cardCat === activeFilter));
 
         if (matchesGroup && matchesJump && matchesFilter) {
             card.style.display = 'block';
@@ -1788,6 +1905,10 @@ function filterAndDisplay() {
             settingsFilterBadge.style.display = 'inline-block';
             settingsFilterBadge.textContent = 'Layout';
             settingsFilterBadge.className = 'settings-active-pill badge-layout';
+        } else if (activeFilter === 'preserved') {
+            settingsFilterBadge.style.display = 'inline-block';
+            settingsFilterBadge.textContent = 'Preserved';
+            settingsFilterBadge.className = 'settings-active-pill badge-preservation-pill';
         } else {
             settingsFilterBadge.style.display = 'none';
         }
