@@ -970,32 +970,81 @@ body {
 :root[data-theme="dark"] .badge-text { background: rgba(168, 85, 247, 0.2); color: #e9d5ff; border-color: #9333ea; }
 :root[data-theme="dark"] .badge-layout { background: rgba(16, 185, 129, 0.2); color: #a7f3d0; border-color: #10b981; }
 
-/* Big Badge for Textual Preservation (पाठसंरक्षणम्) */
-.badge-preservation-big {
-    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-    color: #92400e;
-    border: 1.5px solid #d97706;
-    font-size: 0.84rem;
-    font-weight: 800;
-    padding: 0.2rem 0.75rem;
-    border-radius: 9999px;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    box-shadow: 0 1px 3px rgba(217, 119, 6, 0.25);
-    letter-spacing: 0.02em;
-    vertical-align: middle;
+/* Miss India / Yagnopaveetha Diagonal Sash for पाठसंरक्षणम् */
+.sash-ribbon-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 155px;
+    height: 155px;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 20;
 }
 
-:root[data-theme="dark"] .badge-preservation-big {
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.28) 0%, rgba(217, 119, 6, 0.4) 100%);
-    color: #fde68a;
-    border: 1.5px solid #f59e0b;
-    box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+.sash-ribbon {
+    position: absolute;
+    top: 52px;
+    left: 103px;
+    width: 220px;
+    transform: translate(-50%, -50%) rotate(45deg);
+    background: linear-gradient(135deg, #78350f 0%, #b45309 20%, #f59e0b 50%, #d97706 80%, #78350f 100%);
+    color: #ffffff;
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 800;
+    line-height: 1.25;
+    padding: 0.38rem 0;
+    letter-spacing: 0.05em;
+    pointer-events: auto;
+    cursor: default;
+    user-select: none;
+    /* Golden zari embroidery borders like sacred yajñopavīta / ceremonial pageant sash */
+    border-top: 1.5px solid #fef3c7;
+    border-bottom: 1.5px solid #fde68a;
+    box-shadow: 
+        0 4px 10px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.45),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+    text-shadow: 
+        0 1px 2px rgba(0, 0, 0, 0.8),
+        0 0 5px rgba(245, 158, 11, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    transition: filter 0.2s ease;
+}
+
+.sash-ribbon:hover {
+    filter: brightness(1.1);
+}
+
+:root[data-theme="dark"] .sash-ribbon {
+    background: linear-gradient(135deg, #451a03 0%, #92400e 20%, #d97706 50%, #b45309 80%, #451a03 100%);
+    border-top: 1.5px solid #fde68a;
+    border-bottom: 1.5px solid #d97706;
+    box-shadow: 
+        0 4px 12px rgba(0, 0, 0, 0.6),
+        0 0 12px rgba(245, 158, 11, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9), 0 0 6px rgba(245, 158, 11, 0.8);
 }
 
 .card-preserved {
-    border-left: 4.5px solid #d97706 !important;
+    border: 1.5px solid rgba(217, 119, 6, 0.45) !important;
+    border-left: 5px solid #d97706 !important;
+    box-shadow: 0 4px 14px rgba(217, 119, 6, 0.12) !important;
+}
+
+:root[data-theme="dark"] .card-preserved {
+    border-color: rgba(245, 158, 11, 0.4) !important;
+    border-left-color: #f59e0b !important;
+    box-shadow: 0 4px 18px rgba(245, 158, 11, 0.15) !important;
+}
+
+.card-preserved .card-header {
+    padding-right: 7.5rem;
 }
 
 .diff-panel-preserved {
@@ -1305,6 +1354,20 @@ code {
     .tab-btn {
         padding: 0.45rem 0.85rem;
         font-size: 0.82rem;
+    }
+    .sash-ribbon-container {
+        width: 125px;
+        height: 125px;
+    }
+    .sash-ribbon {
+        top: 42px;
+        left: 83px;
+        width: 180px;
+        font-size: 0.68rem;
+        padding: 0.28rem 0;
+    }
+    .card-preserved .card-header {
+        padding-right: 5.5rem;
     }
 }
 
@@ -1736,6 +1799,12 @@ function renderCards() {
         
         html += `
         <article class="change-card ${it.is_preserved ? 'card-preserved' : ''}" id="card-${it.id}" data-id="${it.id}" data-group="${it.group}" data-page="${it.page}" data-category="${it.cat_keys || ''}">
+            ${it.is_preserved ? `
+            <div class="sash-ribbon-container" title="पाठसंरक्षणम् — यज्ञोपवीतवद् विशिष्ट-सैश-पट्टिका (Textual Preservation Sash)">
+                <div class="sash-ribbon">
+                    <span>🛡️</span> पाठसंरक्षणम्
+                </div>
+            </div>` : ''}
             <div class="card-header">
                 <div class="card-meta-left">
                     <span class="card-num" onclick="copyRefId('${refCode}', this)" title="Click to copy ${refCode}">${refCode}</span>
@@ -1743,7 +1812,6 @@ function renderCards() {
                     <span class="line-tag" title="${it.page}, Line ${it.line || it.line_number}">Line ${it.line || it.line_number}</span>
                     <span class="card-title-text">${it.title}</span>
                     <span class="category-tag ${it.badge_class || 'badge-grammar'}">${it.badge_label || it.category}</span>
-                    ${it.is_preserved ? `<span class="badge-preservation-big">🛡️ पाठसंरक्षणम्</span>` : ''}
                 </div>
             </div>
             <div class="card-body">
