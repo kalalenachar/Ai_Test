@@ -321,12 +321,6 @@ body {
     border-color: #047857;
 }
 
-.filter-pill.filter-pill-preserved.active {
-    background: #d97706;
-    color: #ffffff;
-    border-color: #d97706;
-}
-
 .filter-pill .pill-count {
     font-size: 0.74rem;
     padding: 0.1rem 0.5rem;
@@ -1076,36 +1070,6 @@ body {
 .badge-grammar { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
 .badge-typo { background: #fce7f3; color: #9d174d; border: 1px solid #fbcfe8; }
 
-/* Copy Search Button */
-.copy-btn {
-    padding: 0.35rem 0.75rem;
-    font-size: 0.78rem;
-    font-weight: 600;
-    background: var(--bg-card-subtle);
-    color: var(--text-secondary);
-    border: 1px solid var(--border-dark);
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    transition: all 0.15s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    white-space: nowrap;
-    user-select: none;
-    min-height: 32px;
-}
-
-.copy-btn:hover {
-    background: var(--text-primary);
-    color: var(--bg-page);
-    border-color: var(--text-primary);
-}
-
-.copy-btn.copied {
-    background: #10b981 !important;
-    color: #ffffff !important;
-    border-color: #10b981 !important;
-}
 
 /* Card Body */
 .card-body {
@@ -1357,7 +1321,7 @@ code {
         color: #000000 !important;
         padding: 0 !important;
     }
-    .header-actions, .nav-panel, .showing-tips, .bottom-nav, .toast, .copy-btn {
+    .header-actions, .nav-panel, .showing-tips, .bottom-nav, .toast {
         display: none !important;
     }
     .change-card {
@@ -1463,17 +1427,13 @@ code {
                             <span>सर्वविधाः (All)</span>
                             <span class="pill-count" id="countFilterAll">0</span>
                         </button>
-                        <button class="filter-pill filter-pill-text" data-filter="text" title="Text Mistakes (पाठदोषाः: व्याकरणम्, सन्धिः, मुद्रणदोषः, पाठशुद्धिः)">
+                        <button class="filter-pill filter-pill-text" data-filter="text" title="Text Mistakes &amp; Preserved Readings (पाठदोषाः: व्याकरणम्, सन्धिः, मुद्रणदोषः, पाठशुद्धिः, पाठसंरक्षणम्)">
                             <span>📜 पाठदोषः (Text)</span>
                             <span class="pill-count" id="countFilterText">0</span>
                         </button>
                         <button class="filter-pill filter-pill-layout" data-filter="layout" title="Layout Mistakes (विन्यासदोषाः: दण्डप्रयोगः, रिक्तान्तरम्, श्लोकपाद-विभाजनम्, पद्य-गद्य-विवेकः)">
                             <span>📐 विन्यासदोषः (Layout)</span>
                             <span class="pill-count" id="countFilterLayout">0</span>
-                        </button>
-                        <button class="filter-pill filter-pill-preserved" data-filter="preserved" title="Preserved Readings (पाठसंरक्षणम्: आर्षप्रयोगाः, न्यूनविश्वास-संरक्षणम्)">
-                            <span>🛡️ पाठसंरक्षणम् (Preserved)</span>
-                            <span class="pill-count" id="countFilterPreserved">0</span>
                         </button>
                     </div>
                 </div>
@@ -1771,7 +1731,6 @@ function renderCards() {
 
     let html = '';
     allItems.forEach(it => {
-        const searchEscaped = (it.search_phrase || '').replace(/'/g, "\'").replace(/"/g, '&quot;');
         const idFormatted = String(it.id).padStart(2, '0');
         const refCode = it.ref_id || ('#' + idFormatted);
         
@@ -1786,9 +1745,6 @@ function renderCards() {
                     <span class="category-tag ${it.badge_class || 'badge-grammar'}">${it.badge_label || it.category}</span>
                     ${it.is_preserved ? `<span class="badge-preservation-big">🛡️ पाठसंरक्षणम्</span>` : ''}
                 </div>
-                <button class="copy-btn" onclick="copySearch('${searchEscaped}', this)">
-                    <span>📋 Copy Search Text</span>
-                </button>
             </div>
             <div class="card-body">
                 <div class="diff-grid">
@@ -1829,7 +1785,7 @@ function renderCards() {
     cardsContainer.innerHTML = html;
 }
 
-// Update Filter Pill Counts (2 Doshabhedas + Preserved)
+// Update Filter Pill Counts (2 Doshabhedas: Text & Layout)
 function updateFilterCounts() {
     const scopeItems = allItems.filter(m => m.group === activeGroup);
     const total = scopeItems.length;
@@ -1837,12 +1793,10 @@ function updateFilterCounts() {
     const countFilterAll = document.getElementById('countFilterAll');
     const countFilterText = document.getElementById('countFilterText');
     const countFilterLayout = document.getElementById('countFilterLayout');
-    const countFilterPreserved = document.getElementById('countFilterPreserved');
 
     if (countFilterAll) countFilterAll.textContent = total;
-    if (countFilterText) countFilterText.textContent = scopeItems.filter(m => (m.cat_keys || '') === 'text' || (m.badge_class || '').includes('text')).length;
+    if (countFilterText) countFilterText.textContent = scopeItems.filter(m => (m.cat_keys || '') === 'text' || (m.badge_class || '').includes('text') || m.is_preserved).length;
     if (countFilterLayout) countFilterLayout.textContent = scopeItems.filter(m => (m.cat_keys || '') === 'layout' || (m.badge_class || '').includes('layout')).length;
-    if (countFilterPreserved) countFilterPreserved.textContent = scopeItems.filter(m => m.is_preserved).length;
 }
 
 // Filter and Display Active Cards
@@ -1867,9 +1821,9 @@ function filterAndDisplay() {
         // Jump page check
         const matchesJump = (activeJumpPage === 'all') || (cardPage === activeJumpPage);
 
-        // Category filter check (all, text, layout, preserved)
+        // Category filter check (all, text [including preserved], layout)
         let matchesFilter = (activeFilter === 'all') || 
-                            (activeFilter === 'preserved' ? Boolean(item && item.is_preserved) : (cardCat === activeFilter));
+                            (activeFilter === 'text' ? ((cardCat === 'text') || Boolean(item && item.is_preserved)) : (cardCat === activeFilter));
 
         if (matchesGroup && matchesJump && matchesFilter) {
             card.style.display = 'block';
@@ -1905,10 +1859,6 @@ function filterAndDisplay() {
             settingsFilterBadge.style.display = 'inline-block';
             settingsFilterBadge.textContent = 'Layout';
             settingsFilterBadge.className = 'settings-active-pill badge-layout';
-        } else if (activeFilter === 'preserved') {
-            settingsFilterBadge.style.display = 'inline-block';
-            settingsFilterBadge.textContent = 'Preserved';
-            settingsFilterBadge.className = 'settings-active-pill badge-preservation-pill';
         } else {
             settingsFilterBadge.style.display = 'none';
         }
@@ -1992,25 +1942,6 @@ function copyRefId(code, el) {
     }
 }
 
-// Copy Search Phrase
-function copySearch(text, btn) {
-    const onSuccess = () => {
-        const origHtml = btn.innerHTML;
-        btn.innerHTML = '<span>✓ Copied!</span>';
-        btn.classList.add('copied');
-        showToast('📋 Copied search text');
-        setTimeout(() => {
-            btn.innerHTML = origHtml;
-            btn.classList.remove('copied');
-        }, 1800);
-    };
-
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(onSuccess).catch(() => fallbackCopy(text, onSuccess));
-    } else {
-        fallbackCopy(text, onSuccess);
-    }
-}
 
 function fallbackCopy(text, cb) {
     const ta = document.createElement('textarea');
