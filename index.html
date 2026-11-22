@@ -798,6 +798,171 @@ body {
     white-space: nowrap;
 }
 
+
+/* Settings Button & Trigger */
+.settings-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.5rem 1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-dark);
+    border-radius: var(--radius-sm);
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    box-shadow: var(--shadow-sm);
+    user-select: none;
+}
+
+.settings-btn:hover {
+    border-color: var(--gold);
+    background: var(--gold-light);
+    color: var(--gold);
+}
+
+.settings-active-pill {
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 0.12rem 0.55rem;
+    border-radius: 10px;
+    margin-left: 0.25rem;
+    line-height: 1.2;
+}
+
+/* Settings Modal & Backdrop */
+.settings-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+    animation: fadeInModal 0.2s ease-out;
+}
+
+.settings-modal-dialog {
+    background: var(--bg-card);
+    border: 1px solid var(--border-dark);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 580px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUpModal 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.settings-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.1rem 1.35rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.settings-modal-title {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.settings-modal-close {
+    background: transparent;
+    border: none;
+    font-size: 1.25rem;
+    line-height: 1;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0.35rem 0.65rem;
+    border-radius: var(--radius-sm);
+    transition: all 0.15s ease;
+}
+
+.settings-modal-close:hover {
+    color: var(--text-primary);
+    background: rgba(0, 0, 0, 0.08);
+}
+
+:root[data-theme="dark"] .settings-modal-close:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.settings-modal-body {
+    padding: 1.25rem 1.35rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+}
+
+.settings-group {
+    background: var(--bg-card-subtle);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 0.95rem 1.1rem;
+}
+
+.settings-group-title {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 0.75rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.settings-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.settings-label-text {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.settings-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.85rem 1.35rem;
+    border-top: 1px solid var(--border-color);
+    background: var(--bg-card-subtle);
+}
+
+.settings-done-btn {
+    padding: 0.45rem 1.25rem;
+    border: 1px solid var(--gold);
+    background: var(--gold);
+    color: #ffffff;
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.88rem;
+    transition: all 0.15s ease;
+}
+
+.settings-done-btn:hover {
+    opacity: 0.9;
+}
+
 /* Badges for 2 Doshabhedas */
 .badge-text { background: #f3e8ff; color: #6b21a8; border: 1px solid #d8b4fe; }
 .badge-layout { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
@@ -1127,60 +1292,18 @@ code {
             </div>
             
             <div class="header-actions">
-                <!-- Theme Switcher -->
-                <button id="themeToggleBtn" class="action-btn" title="Toggle Theme (Auto / Light / Dark)" aria-label="Toggle Theme">
-                    <span id="themeIcon">🌓</span>
-                    <span id="themeLabel">Auto</span>
+                <!-- Settings & Filters Trigger -->
+                <button id="openSettingsModalBtn" class="settings-btn" title="Settings &amp; Filters (व्यवस्थापनम्)" aria-haspopup="dialog" aria-expanded="false">
+                    <span class="settings-icon">⚙️</span>
+                    <span class="settings-label">व्यवस्थापनम् (Settings)</span>
+                    <span id="settingsFilterBadge" class="settings-active-pill" style="display: none;"></span>
                 </button>
-                
-                <!-- View Mode Toggle -->
-                <button id="viewModeToggleBtn" class="action-btn" title="Toggle Diff View Layout" aria-label="Toggle Diff View Layout">
-                    <span id="viewModeIcon">↔️</span>
-                    <span id="viewModeLabel">Side-by-Side</span>
-                </button>
-                
-                <!-- Font Scale Controls -->
-                <div class="font-scale-group" title="Adjust Sanskrit font size">
-                    <button id="fontDecBtn" class="action-btn font-btn" aria-label="Decrease Sanskrit text size">A−</button>
-                    <button id="fontResetBtn" class="action-btn font-btn" aria-label="Reset Sanskrit text size">A</button>
-                    <button id="fontIncBtn" class="action-btn font-btn" aria-label="Increase Sanskrit text size">A+</button>
-                </div>
             </div>
         </div>
     </header>
 
     <!-- Navigation Panel -->
     <div class="nav-panel">
-        
-        <!-- Utility Controls Bar (Direct Category Filters & JSON Status) -->
-        <div class="controls-bar-row">
-            <div class="filter-pills-row" id="filterPillsContainer" role="group" aria-label="दोषभेदाः (Filter Categories)">
-                <span class="filter-row-label">🏷️ दोषभेदाः:</span>
-                <button class="filter-pill active" data-filter="all" title="All Types in Range">
-                    <span>सर्वविधाः (All)</span>
-                    <span class="pill-count" id="countFilterAll">0</span>
-                </button>
-                <button class="filter-pill filter-pill-text" data-filter="text" title="Text Mistakes (पाठदोषाः: व्याकरणम्, सन्धिः, मुद्रणदोषः, पाठशुद्धिः)">
-                    <span>📜 पाठदोषः (Text)</span>
-                    <span class="pill-count" id="countFilterText">0</span>
-                </button>
-                <button class="filter-pill filter-pill-layout" data-filter="layout" title="Layout Mistakes (विन्यासदोषाः: दण्डप्रयोगः, रिक्तान्तरम्, श्लोकपाद-विभाजनम्, पद्य-गद्य-विवेकः)">
-                    <span>📐 विन्यासदोषः (Layout)</span>
-                    <span class="pill-count" id="countFilterLayout">0</span>
-                </button>
-            </div>
-            
-            <div class="json-controls">
-                <span class="source-status" id="sourceStatus">
-                    <span class="status-dot"></span>
-                    <span id="sourceStatusText">Loading data...</span>
-                </span>
-                <label class="json-file-label" title="Reload or load another JSON ledger file">
-                    <span>📂 Load / Reload JSON</span>
-                    <input type="file" id="jsonFileInput" accept=".json" style="display: none;">
-                </label>
-            </div>
-        </div>
 
         <!-- Top Dynamic Tabs Row -->
         <div class="tabs-scroll-container">
@@ -1225,6 +1348,88 @@ code {
     </div>
 
 </div>
+
+    <!-- Settings & Filters Popup Modal -->
+    <div class="settings-modal-backdrop" id="settingsModalBackdrop" style="display: none;" aria-hidden="true">
+        <div class="settings-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
+            <div class="settings-modal-header">
+                <h3 id="settingsModalTitle" class="settings-modal-title">⚙️ व्यवस्थापनम् व दोषभेदाः (Settings &amp; Filters)</h3>
+                <button type="button" class="settings-modal-close" id="closeSettingsModalBtn" aria-label="Close Settings Modal">✕</button>
+            </div>
+            <div class="settings-modal-body">
+                <!-- 1. Categories / Filters -->
+                <div class="settings-group">
+                    <h4 class="settings-group-title">🏷️ दोषभेदाः (Filter Categories)</h4>
+                    <div class="filter-pills-row" id="filterPillsContainer" role="group" aria-label="दोषभेदाः (Filter Categories)">
+                        <button class="filter-pill active" data-filter="all" title="All Types in Range">
+                            <span>सर्वविधाः (All)</span>
+                            <span class="pill-count" id="countFilterAll">0</span>
+                        </button>
+                        <button class="filter-pill filter-pill-text" data-filter="text" title="Text Mistakes (पाठदोषाः: व्याकरणम्, सन्धिः, मुद्रणदोषः, पाठशुद्धिः)">
+                            <span>📜 पाठदोषः (Text)</span>
+                            <span class="pill-count" id="countFilterText">0</span>
+                        </button>
+                        <button class="filter-pill filter-pill-layout" data-filter="layout" title="Layout Mistakes (विन्यासदोषाः: दण्डप्रयोगः, रिक्तान्तरम्, श्लोकपाद-विभाजनम्, पद्य-गद्य-विवेकः)">
+                            <span>📐 विन्यासदोषः (Layout)</span>
+                            <span class="pill-count" id="countFilterLayout">0</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 2. Display & View Mode -->
+                <div class="settings-group">
+                    <h4 class="settings-group-title">🌓 दृश्यव्यवस्था (Theme &amp; Diff View)</h4>
+                    <div class="settings-row" style="margin-bottom: 0.75rem;">
+                        <span class="settings-label-text">वर्णव्यवस्था (Theme):</span>
+                        <button id="themeToggleBtn" class="action-btn" title="Toggle Theme (Auto / Light / Dark)" aria-label="Toggle Theme">
+                            <span id="themeIcon">🌓</span>
+                            <span id="themeLabel">Auto</span>
+                        </button>
+                    </div>
+                    <div class="settings-row">
+                        <span class="settings-label-text">पाठसंशोधन-दृश्यम् (Diff View Mode):</span>
+                        <button id="viewModeToggleBtn" class="action-btn" title="Toggle Diff View Layout" aria-label="Toggle Diff View Layout">
+                            <span id="viewModeIcon">↔️</span>
+                            <span id="viewModeLabel">Side-by-Side</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 3. Font Scale -->
+                <div class="settings-group">
+                    <h4 class="settings-group-title">🔤 अक्षरप्रमाणम् (Devanagari Font Size)</h4>
+                    <div class="settings-row">
+                        <span class="settings-label-text">अक्षरपरिमाण-संयोजनम्:</span>
+                        <div class="font-scale-group" title="Adjust Sanskrit font size">
+                            <button id="fontDecBtn" class="action-btn font-btn" aria-label="Decrease Sanskrit text size">A−</button>
+                            <button id="fontResetBtn" class="action-btn font-btn" aria-label="Reset Sanskrit text size">A</button>
+                            <button id="fontIncBtn" class="action-btn font-btn" aria-label="Increase Sanskrit text size">A+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Data Ledger / JSON -->
+                <div class="settings-group">
+                    <h4 class="settings-group-title">📂 दत्तनिवेशः (Data Source)</h4>
+                    <div class="settings-row">
+                        <div class="json-controls">
+                            <span class="source-status" id="sourceStatus">
+                                <span class="status-dot"></span>
+                                <span id="sourceStatusText">Loading data...</span>
+                            </span>
+                            <label class="json-file-label" title="Reload or load another JSON ledger file">
+                                <span>📂 Load / Reload JSON</span>
+                                <input type="file" id="jsonFileInput" accept=".json" style="display: none;">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="settings-modal-footer">
+                <button type="button" class="settings-done-btn" id="closeSettingsModalDoneBtn">✓ पूर्णम् (Close)</button>
+            </div>
+        </div>
+    </div>
 
 <!-- Toast element -->
 <div id="toast" class="toast" role="status" aria-live="polite">
@@ -1572,6 +1777,21 @@ function filterAndDisplay() {
 
     showingCountText.textContent = `दर्शितम्: ${visibleCount} / ${totalScope} स्थानानि (${groupLabel})`;
     activeFiltersSummary.textContent = summaryExtras.length > 0 ? `[${summaryExtras.join(' | ')}]` : '';
+    
+    // Update Settings Button indicator badge
+    if (settingsFilterBadge) {
+        if (activeFilter === 'text') {
+            settingsFilterBadge.style.display = 'inline-block';
+            settingsFilterBadge.textContent = 'Text';
+            settingsFilterBadge.className = 'settings-active-pill badge-text';
+        } else if (activeFilter === 'layout') {
+            settingsFilterBadge.style.display = 'inline-block';
+            settingsFilterBadge.textContent = 'Layout';
+            settingsFilterBadge.className = 'settings-active-pill badge-layout';
+        } else {
+            settingsFilterBadge.style.display = 'none';
+        }
+    }
 }
 
 // Direct Filter Pills Click Handling
@@ -1587,6 +1807,46 @@ function initFilterPills() {
     });
 }
 initFilterPills();
+
+// Settings Modal Controls
+const openSettingsModalBtn = document.getElementById('openSettingsModalBtn');
+const closeSettingsModalBtn = document.getElementById('closeSettingsModalBtn');
+const closeSettingsModalDoneBtn = document.getElementById('closeSettingsModalDoneBtn');
+const settingsModalBackdrop = document.getElementById('settingsModalBackdrop');
+const settingsFilterBadge = document.getElementById('settingsFilterBadge');
+
+function openSettingsModal() {
+    if (!settingsModalBackdrop) return;
+    settingsModalBackdrop.style.display = 'flex';
+    settingsModalBackdrop.setAttribute('aria-hidden', 'false');
+    if (openSettingsModalBtn) openSettingsModalBtn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeSettingsModal() {
+    if (!settingsModalBackdrop) return;
+    settingsModalBackdrop.style.display = 'none';
+    settingsModalBackdrop.setAttribute('aria-hidden', 'true');
+    if (openSettingsModalBtn) openSettingsModalBtn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+}
+
+if (openSettingsModalBtn) openSettingsModalBtn.addEventListener('click', openSettingsModal);
+if (closeSettingsModalBtn) closeSettingsModalBtn.addEventListener('click', closeSettingsModal);
+if (closeSettingsModalDoneBtn) closeSettingsModalDoneBtn.addEventListener('click', closeSettingsModal);
+
+if (settingsModalBackdrop) {
+    settingsModalBackdrop.addEventListener('click', (e) => {
+        if (e.target === settingsModalBackdrop) closeSettingsModal();
+    });
+}
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && settingsModalBackdrop && settingsModalBackdrop.style.display === 'flex') {
+        closeSettingsModal();
+    }
+});
+
 
 // Copy Reference ID
 function copyRefId(code, el) {
