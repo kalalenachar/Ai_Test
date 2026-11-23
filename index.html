@@ -1279,56 +1279,6 @@ ins {
     justify-content: center;
 }
 
-/* ==========================================================================
-   FLOATING ACTION UTILITIES BAR
-   ========================================================================== */
-.floating-dock-bar {
-    position: fixed;
-    bottom: 1.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--bg-toolbar);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-xl);
-    padding: 0.45rem 0.85rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    box-shadow: var(--shadow-xl);
-    z-index: 90;
-    transition: all 0.2s ease;
-}
-
-.floating-dock-bar .dock-btn {
-    padding: 0.38rem 0.75rem;
-    border-radius: var(--radius-lg);
-    background: var(--bg-surface);
-    border: 1px solid var(--border-color);
-    color: var(--text-secondary);
-    font-size: 0.78rem;
-    font-weight: 700;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    transition: all 0.15s ease;
-    user-select: none;
-}
-
-.floating-dock-bar .dock-btn:hover {
-    color: var(--text-primary);
-    border-color: var(--primary-border);
-    background: var(--primary-light);
-    transform: translateY(-1px);
-}
-
-.dock-divider {
-    width: 1px;
-    height: 18px;
-    background: var(--border-color);
-}
 
 /* ==========================================================================
    SETTINGS & DATA MODAL DIALOG
@@ -1536,15 +1486,10 @@ ins {
     .card-content-body {
         padding: 0.85rem;
     }
-    .floating-dock-bar {
-        width: calc(100% - 2rem);
-        justify-content: space-around;
-        bottom: 0.75rem;
-    }
     .app-toast {
         left: 1rem;
         right: 1rem;
-        bottom: 4.5rem;
+        bottom: 1.5rem;
         justify-content: center;
     }
 }
@@ -1572,7 +1517,7 @@ ins {
         color: #000000 !important;
         padding: 0 !important;
     }
-    .top-bar-sticky, .navigation-workbench, .floating-dock-bar, .bottom-nav-row, .app-toast, .results-summary-strip .inline-action-btn {
+    .top-bar-sticky, .navigation-workbench, .bottom-nav-row, .app-toast, .results-summary-strip .inline-action-btn {
         display: none !important;
     }
     .change-card {
@@ -1783,24 +1728,6 @@ ins {
 
 </div>
 
-<!-- Floating Action Utilities Dock -->
-<div class="floating-dock-bar" id="floatingDockBar" role="toolbar" aria-label="Quick Actions">
-    <button class="dock-btn" id="dockScrollTopBtn" title="Scroll back to top">
-        <span>🔝</span>
-        <span>Top</span>
-    </button>
-    <span class="dock-divider"></span>
-    <button class="dock-btn" id="dockCopyAllBtn" title="Copy reference IDs of currently visible cards">
-        <span>📋</span>
-        <span>Copy Visible IDs</span>
-    </button>
-    <span class="dock-divider"></span>
-    <button class="dock-btn" id="dockPrintBtn" title="Print or export current view">
-        <span>🖨️</span>
-        <span>Print</span>
-    </button>
-</div>
-
 <!-- Settings & Data Source Modal Dialog -->
 <div class="modal-overlay" id="settingsModalBackdrop" style="display: none;" aria-hidden="true">
     <div class="modal-dialog-box" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
@@ -2006,33 +1933,10 @@ document.getElementById('modalFontResetBtn').addEventListener('click', fontReset
 document.getElementById('modalFontIncBtn').addEventListener('click', fontInc);
 
 // ==========================================================================
-// SCROLL & DOCK CONTROLS
+// SCROLL CONTROLS
 // ==========================================================================
 const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 document.getElementById('scrollToTopLink').addEventListener('click', scrollToTop);
-document.getElementById('dockScrollTopBtn').addEventListener('click', scrollToTop);
-
-document.getElementById('dockPrintBtn').addEventListener('click', () => window.print());
-
-document.getElementById('dockCopyAllBtn').addEventListener('click', () => {
-    const visibleCards = Array.from(cardsContainer.querySelectorAll('.change-card'))
-        .filter(c => c.style.display !== 'none');
-    const ids = visibleCards.map(c => {
-        const item = allItems.find(it => String(it.id) === c.getAttribute('data-id'));
-        return item ? item.ref_id : '';
-    }).filter(Boolean);
-
-    if (ids.length === 0) {
-        showToast('No cards currently visible');
-        return;
-    }
-    const text = ids.join('\n');
-    navigator.clipboard.writeText(text).then(() => {
-        showToast(`📋 Copied ${ids.length} visible Ref IDs!`);
-    }).catch(() => {
-        fallbackCopy(text, () => showToast(`📋 Copied ${ids.length} Ref IDs!`));
-    });
-});
 
 // ==========================================================================
 // DATA PROCESSING & DYNAMIC RENDERING
