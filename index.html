@@ -3083,67 +3083,67 @@
                 return;
             }
 
-                const activeEl = document.activeElement;
-                const isInputFocused = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA');
+            const activeEl = document.activeElement;
+            const isInputFocused = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA');
 
-                // 'I' or 'i' when not typing: Toggle Doshabheda Info pop-up
-                if (!isInputFocused && e.key.toLowerCase() === 'i') {
-                    e.preventDefault();
-                    toggleDoshaInfoModal();
-                    return;
-                }
+            // 'I' or 'i' when not typing: Toggle Doshabheda Info pop-up
+            if (!isInputFocused && e.key.toLowerCase() === 'i') {
+                e.preventDefault();
+                toggleDoshaInfoModal();
+                return;
+            }
 
-                // Alt + S: Toggle Side-by-Side vs Stacked Diff Layout
-                if (e.altKey && e.key.toLowerCase() === 's') {
-                    e.preventDefault();
-                    applyViewMode(currentViewMode === 'side-by-side' ? 'stacked' : 'side-by-side', true);
-                    return;
-                }
+            // Alt + S: Toggle Side-by-Side vs Stacked Diff Layout
+            if (e.altKey && e.key.toLowerCase() === 's') {
+                e.preventDefault();
+                applyViewMode(currentViewMode === 'side-by-side' ? 'stacked' : 'side-by-side', true);
+                return;
+            }
 
-                // Alt + '+' or Alt + '=': Increase Sanskrit font size
-                if (e.altKey && (e.key === '+' || e.key === '=')) {
-                    e.preventDefault();
-                    fontInc(true);
-                    return;
-                }
+            // Alt + '+' or Alt + '=': Increase Sanskrit font size
+            if (e.altKey && (e.key === '+' || e.key === '=')) {
+                e.preventDefault();
+                fontInc(true);
+                return;
+            }
 
-                // Alt + '-': Decrease Sanskrit font size
-                if (e.altKey && (e.key === '-' || e.key === '_')) {
-                    e.preventDefault();
-                    fontDec(true);
-                    return;
-                }
+            // Alt + '-': Decrease Sanskrit font size
+            if (e.altKey && (e.key === '-' || e.key === '_')) {
+                e.preventDefault();
+                fontDec(true);
+                return;
+            }
 
-                // Alt + '0': Reset Sanskrit font size
-                if (e.altKey && e.key === '0') {
-                    e.preventDefault();
-                    fontReset(true);
-                    return;
-                }
+            // Alt + '0': Reset Sanskrit font size
+            if (e.altKey && e.key === '0') {
+                e.preventDefault();
+                fontReset(true);
+                return;
+            }
 
-                // Alt + T: Toggle Dark / Light Theme
-                if (e.altKey && e.key.toLowerCase() === 't') {
-                    e.preventDefault();
-                    if (currentTheme === 'auto') applyTheme('dark');
-                    else if (currentTheme === 'dark') applyTheme('light');
-                    else applyTheme('auto');
-                    showToast(`Theme switched to: ${currentTheme.toUpperCase()}`);
-                    return;
-                }
+            // Alt + T: Toggle Dark / Light Theme
+            if (e.altKey && e.key.toLowerCase() === 't') {
+                e.preventDefault();
+                if (currentTheme === 'auto') applyTheme('dark');
+                else if (currentTheme === 'dark') applyTheme('light');
+                else applyTheme('auto');
+                showToast(`Theme switched to: ${currentTheme.toUpperCase()}`);
+                return;
+            }
 
-                // '?' (Shift + /) when not typing: Toggle shortcuts modal dialog
-                if (!isInputFocused && e.key === '?') {
-                    e.preventDefault();
-                    if (settingsModalBackdrop) {
-                        if (settingsModalBackdrop.style.display === 'flex') {
-                            closeSettingsModal();
-                        } else {
-                            openSettingsModal();
-                        }
+            // '?' (Shift + /) when not typing: Toggle shortcuts modal dialog
+            if (!isInputFocused && e.key === '?') {
+                e.preventDefault();
+                if (settingsModalBackdrop) {
+                    if (settingsModalBackdrop.style.display === 'flex') {
+                        closeSettingsModal();
+                    } else {
+                        openSettingsModal();
                     }
-                    return;
                 }
-            });
+                return;
+            }
+        });
 
         // ==========================================================================
         // MODAL CONTROLS
