@@ -1832,18 +1832,6 @@ ins {
                 </div>
             </div>
 
-            <!-- View Mode -->
-            <div class="settings-box-panel">
-                <h4 class="settings-panel-heading">↔️ पाठसंशोधन-दृश्यम् (Diff View Mode)</h4>
-                <div class="settings-row-item">
-                    <span style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">अन्तरप्रदर्शन-विन्यासः:</span>
-                    <button id="modalViewModeBtn" class="ctrl-btn">
-                        <span id="modalViewModeIcon">↔️</span>
-                        <span id="modalViewModeLabel">Side-by-Side</span>
-                    </button>
-                </div>
-            </div>
-
             <!-- Font Size -->
             <div class="settings-box-panel">
                 <h4 class="settings-panel-heading">🔤 अक्षरप्रमाणम् (Devanagari Font Size)</h4>
@@ -1980,28 +1968,19 @@ function applyViewMode(mode) {
     localStorage.setItem('ppsm_view_mode', mode);
     const viewModeIcon = document.getElementById('viewModeIcon');
     const viewModeLabel = document.getElementById('viewModeLabel');
-    const modalViewModeIcon = document.getElementById('modalViewModeIcon');
-    const modalViewModeLabel = document.getElementById('modalViewModeLabel');
 
     if (mode === 'stacked') {
         appWrapper.classList.add('view-stacked');
         if (viewModeIcon) viewModeIcon.textContent = '↕️';
         if (viewModeLabel) viewModeLabel.textContent = 'Stacked';
-        if (modalViewModeIcon) modalViewModeIcon.textContent = '↕️';
-        if (modalViewModeLabel) modalViewModeLabel.textContent = 'Stacked';
     } else {
         appWrapper.classList.remove('view-stacked');
         if (viewModeIcon) viewModeIcon.textContent = '↔️';
         if (viewModeLabel) viewModeLabel.textContent = 'Side-by-Side';
-        if (modalViewModeIcon) modalViewModeIcon.textContent = '↔️';
-        if (modalViewModeLabel) modalViewModeLabel.textContent = 'Side-by-Side';
     }
 }
 
 document.getElementById('viewModeToggleBtn').addEventListener('click', () => {
-    applyViewMode(currentViewMode === 'side-by-side' ? 'stacked' : 'side-by-side');
-});
-document.getElementById('modalViewModeBtn').addEventListener('click', () => {
     applyViewMode(currentViewMode === 'side-by-side' ? 'stacked' : 'side-by-side');
 });
 
