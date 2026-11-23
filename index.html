@@ -633,11 +633,60 @@ body {
     color: #ffffff;
 }
 
-/* Instant Search Input */
+/* Search Trigger Button (Default State) */
+.search-trigger-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.42rem 0.85rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+    box-shadow: var(--shadow-sm);
+    white-space: nowrap;
+}
+
+.search-trigger-btn:hover {
+    border-color: var(--primary-border);
+    color: var(--primary);
+    background: var(--primary-light);
+    transform: translateY(-1px);
+}
+
+.search-trigger-kbd {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-color);
+    padding: 0.1rem 0.38rem;
+    border-radius: 4px;
+    color: var(--text-muted);
+    font-weight: 700;
+}
+
+/* Instant Search Input (Hidden by default, reveals on Ctrl+K) */
 .search-input-wrapper {
     position: relative;
+    display: none;
+    align-items: center;
     flex: 1 1 300px;
     max-width: 440px;
+    animation: searchSlideIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.search-input-wrapper.open {
+    display: flex;
+}
+
+@keyframes searchSlideIn {
+    from { opacity: 0; transform: scale(0.97) translateX(6px); }
+    to { opacity: 1; transform: scale(1) translateX(0); }
 }
 
 .search-input-wrapper .search-icon {
@@ -670,7 +719,7 @@ body {
 
 .search-shortcut-badge {
     position: absolute;
-    right: 0.65rem;
+    right: 2.1rem;
     top: 50%;
     transform: translateY(-50%);
     font-family: 'JetBrains Mono', monospace;
@@ -686,7 +735,7 @@ body {
 
 .search-clear-btn {
     position: absolute;
-    right: 2.3rem;
+    right: 0.4rem;
     top: 50%;
     transform: translateY(-50%);
     background: none;
@@ -694,12 +743,17 @@ body {
     color: var(--text-muted);
     cursor: pointer;
     font-size: 0.85rem;
-    padding: 0.2rem;
-    display: none;
+    padding: 0.2rem 0.45rem;
+    border-radius: 3px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
 }
 
 .search-clear-btn:hover {
     color: var(--text-primary);
+    background: rgba(0, 0, 0, 0.08);
 }
 
 /* Row 2: Page Jump Strip */
@@ -1659,12 +1713,19 @@ ins {
                 <!-- Dynamically populated from JSON groups -->
             </div>
 
-            <!-- Instant Search Input -->
-            <div class="search-input-wrapper">
+            <!-- Search Trigger Button (Default State) -->
+            <button type="button" id="searchTriggerBtn" class="search-trigger-btn" title="Press Ctrl + K to search" aria-label="Open Search">
+                <span>🔍</span>
+                <span>खोज (Search)</span>
+                <kbd class="search-trigger-kbd">Ctrl+K</kbd>
+            </button>
+
+            <!-- Instant Search Input (Revealed on Ctrl + K or Click) -->
+            <div class="search-input-wrapper" id="searchInputWrapper">
                 <span class="search-icon">🔍</span>
                 <input type="text" id="instantSearchInput" class="instant-search-input" placeholder="खोज / Search Ref ID, Shloka, Sūtra, Line..." autocomplete="off" spellcheck="false" aria-label="Search Audit Ledger">
-                <span class="search-shortcut-badge">⌘K</span>
-                <button type="button" id="searchClearBtn" class="search-clear-btn" title="Clear search" aria-label="Clear search">✕</button>
+                <span class="search-shortcut-badge" title="Press Escape to close">Esc</span>
+                <button type="button" id="searchClearBtn" class="search-clear-btn" title="Close search (Esc)" aria-label="Close search">✕</button>
             </div>
         </div>
 
@@ -1811,6 +1872,8 @@ const cardsContainer = document.getElementById('cardsContainer');
 const topTabsContainer = document.getElementById('topTabsContainer');
 const bottomTabsContainer = document.getElementById('bottomTabsContainer');
 const jumpChipsContainer = document.getElementById('jumpChipsContainer');
+const searchTriggerBtn = document.getElementById('searchTriggerBtn');
+const searchInputWrapper = document.getElementById('searchInputWrapper');
 const instantSearchInput = document.getElementById('instantSearchInput');
 const searchClearBtn = document.getElementById('searchClearBtn');
 const showingCountText = document.getElementById('showingCountText');
@@ -2269,26 +2332,50 @@ function updateActiveMetricHighlight() {
 }
 
 // Instant Search Input Handling
+function openSearch() {
+    if (!searchInputWrapper) return;
+    searchInputWrapper.classList.add('open');
+    if (searchTriggerBtn) searchTriggerBtn.style.display = 'none';
+    instantSearchInput.focus();
+    instantSearchInput.select();
+}
+
+function closeSearch() {
+    if (!searchInputWrapper) return;
+    searchInputWrapper.classList.remove('open');
+    if (searchTriggerBtn) searchTriggerBtn.style.display = 'inline-flex';
+    if (searchQuery.length > 0) {
+        instantSearchInput.value = '';
+        searchQuery = '';
+        filterAndDisplay();
+    }
+}
+
+if (searchTriggerBtn) {
+    searchTriggerBtn.addEventListener('click', openSearch);
+}
+
 instantSearchInput.addEventListener('input', (e) => {
     searchQuery = e.target.value;
-    searchClearBtn.style.display = searchQuery.length > 0 ? 'inline-block' : 'none';
     filterAndDisplay();
 });
 
 searchClearBtn.addEventListener('click', () => {
-    instantSearchInput.value = '';
-    searchQuery = '';
-    searchClearBtn.style.display = 'none';
-    instantSearchInput.focus();
-    filterAndDisplay();
+    closeSearch();
 });
 
-// Keyboard Shortcut: Cmd/Ctrl + K to focus search
+// Keyboard Shortcut: Cmd/Ctrl + K to reveal & focus search
 document.addEventListener('keydown', (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
-        instantSearchInput.focus();
-        instantSearchInput.select();
+        openSearch();
+    }
+    if (e.key === 'Escape') {
+        if (settingsModalBackdrop && settingsModalBackdrop.style.display === 'flex') {
+            closeSettingsModal();
+        } else if (searchInputWrapper && searchInputWrapper.classList.contains('open')) {
+            closeSearch();
+        }
     }
     if (e.altKey && e.key.toLowerCase() === 's') {
         e.preventDefault();
