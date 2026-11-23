@@ -1473,6 +1473,258 @@ ins {
     opacity: 0.9;
 }
 
+/* ==========================================================================
+   DOSHABHEDA CLASSIFICATION GUIDE MODAL & TRIGGERS
+   ========================================================================== */
+.modal-dialog-guide {
+    max-width: 980px;
+    width: 95%;
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-dialog-guide .modal-body-content {
+    overflow-y: auto;
+    padding: 1.25rem 1.5rem;
+    max-height: calc(88vh - 140px);
+}
+
+.guide-tabs-bar {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--bg-surface-elevated);
+    border-bottom: 1px solid var(--border-color);
+    flex-wrap: wrap;
+}
+
+.guide-tab-pill {
+    padding: 0.42rem 0.95rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.guide-tab-pill:hover {
+    color: var(--text-primary);
+    border-color: var(--primary-border);
+}
+
+.guide-tab-pill.active {
+    background: var(--primary);
+    color: #ffffff;
+    border-color: var(--primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.guide-tab-pill.guide-tab-text.active {
+    background: #9333ea;
+    border-color: #9333ea;
+}
+
+.guide-tab-pill.guide-tab-layout.active {
+    background: #059669;
+    border-color: #059669;
+}
+
+/* Category Container Grid */
+.guide-categories-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+}
+
+.guide-categories-grid.show-only-text {
+    grid-template-columns: 1fr;
+}
+.guide-categories-grid.show-only-text .guide-col-layout {
+    display: none;
+}
+
+.guide-categories-grid.show-only-layout {
+    grid-template-columns: 1fr;
+}
+.guide-categories-grid.show-only-layout .guide-col-text {
+    display: none;
+}
+
+@media (max-width: 860px) {
+    .guide-categories-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.guide-category-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.guide-cat-header-card {
+    padding: 0.85rem 1.1rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    margin-bottom: 0.25rem;
+}
+
+.guide-cat-header-card.header-text {
+    background: var(--cat-text-bg);
+    border-color: var(--cat-text-border);
+    color: var(--cat-text-fg);
+}
+
+.guide-cat-header-card.header-layout {
+    background: var(--cat-layout-bg);
+    border-color: var(--cat-layout-border);
+    color: var(--cat-layout-fg);
+}
+
+.guide-cat-title {
+    font-size: 1rem;
+    font-weight: 800;
+    margin-bottom: 0.35rem;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.guide-cat-desc {
+    font-size: 0.82rem;
+    line-height: 1.5;
+    opacity: 0.9;
+}
+
+/* Individual Rule Item Card */
+.guide-rule-item {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 0.85rem 1rem;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.guide-rule-item:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.guide-rule-item.border-text {
+    border-left: 4px solid #9333ea;
+}
+
+.guide-rule-item.border-layout {
+    border-left: 4px solid #059669;
+}
+
+.guide-rule-name {
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 0.35rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+}
+
+.guide-rule-sutra {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    background: var(--bg-surface-elevated);
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+}
+
+.guide-rule-body {
+    font-family: 'Noto Serif Devanagari', 'Martel', Georgia, serif;
+    font-size: 0.96rem;
+    line-height: 1.65;
+    color: var(--text-secondary);
+    margin-bottom: 0.6rem;
+}
+
+/* Diff Demonstration Box */
+.guide-diff-demo {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-subtle);
+    padding: 0.45rem 0.75rem;
+    border-radius: var(--radius-sm);
+    font-family: 'Noto Serif Devanagari', serif;
+    font-size: 0.96rem;
+    flex-wrap: wrap;
+}
+
+.demo-side {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.demo-label {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+}
+
+.demo-arrow {
+    color: var(--text-muted);
+    font-weight: 800;
+    font-size: 0.9rem;
+}
+
+/* Metric Card Info Hint Button */
+.metric-info-trigger {
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    padding: 0;
+    line-height: 1;
+    color: var(--text-secondary);
+}
+
+.metric-info-trigger:hover {
+    background: var(--primary-light);
+    border-color: var(--primary-border);
+    color: var(--primary);
+    transform: scale(1.15);
+}
+
+.filter-pill.filter-pill-info {
+    border-color: var(--primary-border);
+    color: var(--primary);
+    background: var(--primary-light);
+}
+
+.filter-pill.filter-pill-info:hover {
+    background: var(--primary);
+    color: #ffffff;
+}
+
 /* Toast Component */
 .app-toast {
     position: fixed;
@@ -1627,6 +1879,12 @@ ins {
             </div>
 
             <div class="top-bar-actions">
+                <!-- Doshabheda Information Trigger Button -->
+                <button type="button" id="openDoshaInfoBtnHeader" class="ctrl-btn" title="दोषभेद-परिचयः (Category Classification Guide - Press 'I')" aria-label="Open Classification Guide">
+                    <span style="font-weight: 800; color: var(--primary);">ℹ️</span>
+                    <span>दोषभेद-परिचयः</span>
+                </button>
+
                 <!-- Theme Mode Toggle -->
                 <button id="themeToggleBtn" class="ctrl-btn" title="Toggle Dark/Light Mode (Alt+T)" aria-label="Toggle Theme">
                     <span id="themeToggleIcon">🌓</span>
@@ -1658,7 +1916,10 @@ ins {
         <div class="metric-card card-text" id="metricCardText" title="Click to filter Text &amp; Grammar Mistakes">
             <div class="metric-header">
                 <span class="metric-title">📜 पाठदोषाः (Text &amp; Grammar)</span>
-                <span class="metric-icon">🖋️</span>
+                <span style="display: flex; align-items: center; gap: 0.35rem;">
+                    <button type="button" class="metric-info-trigger" title="What is included in Text Mistakes? (Press 'I')" onclick="event.stopPropagation(); openDoshaInfoModal('text');" aria-label="Text Mistakes Information">ℹ️</button>
+                    <span class="metric-icon">🖋️</span>
+                </span>
             </div>
             <div class="metric-number-row">
                 <span class="metric-number" id="metricCountText">0</span>
@@ -1674,7 +1935,10 @@ ins {
         <div class="metric-card card-layout" id="metricCardLayout" title="Click to filter Layout &amp; Typography Mistakes">
             <div class="metric-header">
                 <span class="metric-title">📐 विन्यासदोषाः (Layout)</span>
-                <span class="metric-icon">📏</span>
+                <span style="display: flex; align-items: center; gap: 0.35rem;">
+                    <button type="button" class="metric-info-trigger" title="What is included in Layout Mistakes? (Press 'I')" onclick="event.stopPropagation(); openDoshaInfoModal('layout');" aria-label="Layout Mistakes Information">ℹ️</button>
+                    <span class="metric-icon">📏</span>
+                </span>
             </div>
             <div class="metric-number-row">
                 <span class="metric-number" id="metricCountLayout">0</span>
@@ -1756,6 +2020,10 @@ ins {
                     <span>🛡️ पाठसंरक्षणम् (Preserved)</span>
                     <span class="pill-counter" id="countFilterPreserved">0</span>
                 </button>
+                <button type="button" class="filter-pill filter-pill-info" id="openDoshaInfoBtnPill" title="Learn what mistakes belong to Text vs Layout categories (Press 'I')">
+                    <span style="color: var(--primary); font-weight: 800;">ℹ️</span>
+                    <span>दोषभेद-परिचयः (Guide)</span>
+                </button>
             </div>
 
             <div class="view-mode-quick-toggle">
@@ -1780,6 +2048,312 @@ ins {
         <div class="loading-box">⏳ Loading proofreading ledger data...</div>
     </main>
 
+</div>
+
+<!-- Doshabheda Educational Guide Modal -->
+<div class="modal-overlay" id="doshaInfoModalBackdrop" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog-box modal-dialog-guide" role="dialog" aria-modal="true" aria-labelledby="doshaInfoModalTitle">
+        <div class="modal-header-strip">
+            <div>
+                <h3 id="doshaInfoModalTitle" class="modal-title-text" style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="color: var(--primary);">ℹ️</span>
+                    <span>द्विविध-दोषभेद-परिचयः (Mistake Classification Guide)</span>
+                </h3>
+                <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem;">
+                    द्विविध-संशोधन-व्यवस्था • Philological Content (Text) vs. Structural Delimiters (Layout)
+                </div>
+            </div>
+            <button type="button" class="modal-close-trigger" id="closeDoshaInfoBtn" aria-label="Close Guide">✕</button>
+        </div>
+
+        <!-- Guide Category Tabs -->
+        <div class="guide-tabs-bar" role="tablist">
+            <button type="button" class="guide-tab-pill active" id="tabGuideAll" data-guidetab="all" onclick="switchGuideTab('all')">
+                <span>सर्वम् (Both Side-by-Side)</span>
+            </button>
+            <button type="button" class="guide-tab-pill guide-tab-text" id="tabGuideText" data-guidetab="text" onclick="switchGuideTab('text')">
+                <span>📜 पाठदोषाः (Text &amp; Grammar)</span>
+            </button>
+            <button type="button" class="guide-tab-pill guide-tab-layout" id="tabGuideLayout" data-guidetab="layout" onclick="switchGuideTab('layout')">
+                <span>📐 विन्यासदोषाः (Layout &amp; Delimiters)</span>
+            </button>
+        </div>
+
+        <div class="modal-body-content">
+            <div class="guide-categories-grid" id="guideCategoriesGrid">
+                <!-- Column 1: Text Mistakes -->
+                <div class="guide-category-column guide-col-text">
+                    <div class="guide-cat-header-card header-text">
+                        <div class="guide-cat-title">
+                            <span>📜</span>
+                            <span>पाठदोषाः (Text Mistakes - Content &amp; Philology)</span>
+                        </div>
+                        <div class="guide-cat-desc">
+                            ग्रन्थस्य आन्तरिक-पाठे, पाणिनि-व्याकरणे, सन्धावुच्चारणे, ओसीआर-मुद्रणभ्रंशेषु, पाठसंरक्षणे (आर्षप्रयोगेषु) च ये दोषाः समाविष्टाः।
+                        </div>
+                    </div>
+
+                    <!-- Rule 1: Anusvara vs Makara -->
+                    <div class="guide-rule-item border-text">
+                        <div class="guide-rule-name">
+                            <span>१. अनुस्वार-मकार-व्यवस्था</span>
+                            <span class="guide-rule-sutra">मोऽनुस्वारः पा० ८.३.२३</span>
+                        </div>
+                        <div class="guide-rule-body">
+                            स्वरे परे पदान्ते अनुस्वारो न कदापि प्रयोक्तव्यः, हलन्त-मकार (म्) एव साधु। व्यञ्जने (हलि) परे तु अनुस्वार (ं) एव विधीयते।
+                        </div>
+                        <div class="guide-diff-demo">
+                            <span class="demo-side"><span class="demo-label">दोषः:</span> <del>कार्यं आरभते</del></span>
+                            <span class="demo-arrow">➔</span>
+                            <span class="demo-side"><span class="demo-label">शुद्धम्:</span> <ins>कार्यम् आरभते</ins></span>
+                            <span style="opacity: 0.35;">|</span>
+                            <span class="demo-side"><del>कृतम् कार्यम्</del> ➔ <ins>कृतं कार्यम्</ins></span>
+                        </div>
+                    </div>
+
+                    <!-- Rule 2: Repha Sandhi -->
+                    <div class="guide-rule-item border-text">
+                        <div class="guide-rule-name">
+                            <span>२. रेफसन्धि-नियमः</span>
+                            <span class="guide-rule-sutra">ससजुषो रुः पा० ८.२.६६</span>
+                        </div>
+                        <div class="guide-rule-body">
+                            अ/आ-भिन्नस्वरात् परस्य रुँ-स्थानिकविसर्गस्य स्वरे परे रेफादेशो (र्) भवति।
+                        </div>
+                        <div class="guide-diff-demo">
+                            <span class="demo-side"><span class="demo-label">दोषः:</span> <del>द्वितीयादशम्योः उत्तरस्यां</del></span>
+                            <span class="demo-arrow">➔</span>
+                            <span class="demo-side"><span class="demo-label">शुद्धम्:</span> <ins>द्वितीयादशम्योरुत्तरस्याम्</ins></span>
+                        </div>
+                    </div>
+
+                    <!-- Rule 3: Visarga Lopa -->
+                    <div class="guide-rule-item border-text">
+                        <div class="guide-rule-name">
+                            <span>३. सः/एषः सुलोप-नियमः</span>
+                            <span class="guide-rule-sutra">एतत्तदोः सुलोपः पा० ६.१.१३२</span>
+                        </div>
+                        <div class="guide-rule-body">
+                            व्यञ्जने (हलि) परे 'सः' तथा 'एषः' इत्यनयोः विसर्गस्य लोपो भवति (नञ्समासं वर्जयित्वा)।
+                        </div>
+                        <div class="guide-diff-demo">
+                            <span class="demo-side"><span class="demo-label">दोषः:</span> <del>सः गच्छति</del></span>
+                            <span class="demo-arrow">➔</span>
+                            <span class="demo-side"><span class="demo-label">शुद्धम्:</span> <ins>स गच्छति</ins></span>
+                            <span style="opacity: 0.35;">|</span>
+                            <span class="demo-side"><del>एषः पश्यति</del> ➔ <ins>एष पश्यति</ins></span>
+                        </div>
+                    </div>
+
+                    <!-- Rule 4: Avagraha Standard -->
+                    <div class="guide-rule-item border-text">
+                        <div class="guide-rule-name">
+                            <span>४. अवग्रह-मानकम्</span>
+                            <span class="guide-rule-sutra">एङः पदान्तादति पा० ६.१.१०९</span>
+                        </div>
+                        <div class="guide-rule-body">
+                            पदान्तात् ए/ओ इत्येताभ्यां परस्य ह्रस्व-अकारस्य पूर्वरूपेऽवग्रहः (ऽ) स्थाप्यते। सवर्णदीर्घसन्धौ तु अवग्रहो न भवति।
+                        </div>
+                        <div class="guide-diff-demo">
+                            <span class="demo-side"><span class="demo-label">दोषः:</span> <del>सो अब्रवीत्</del> / <del>लङ्काऽऽग्नेय</del></span>
+                            <span class="demo-arrow">➔</span>
+                            <span class="demo-side"><span class="demo-label">शुद्धम्:</span> <ins>सोऽब्रवीत्</ins> / <ins>लङ्काग्नेय</ins></span>
+                        </div>
+                    </div>
+
+                    <!-- Rule 5: Concord & Verb Forms -->
+                    <div class="guide-rule-item border-text">
+                        <div class="guide-rule-name">
+                            <span>५. पदसिद्धिः व समानाधिकरणम्</span>
+                            <span class="guide-rule-sutra">व्याकरण-अन्वयः</span>
+                        </div>
+                        <div class="guide-rule-body">
+                            आत्मनेपद-परस्मैपद-शुद्धिः (प्रयतेत, न तु प्रयतेत्), विशेष्य-विशेषणयोः लिङ्ग-वचनान्वयः।
+                        </div>
+                        <div class="guide-diff-demo">
+                            <span class="demo-side"><span class="demo-label">दोषः:</span> <del>भीमा कालायसमयाः</del></span>
+                            <span class="demo-arrow">➔</span>
+                            <span class="demo-side"><span class="demo-label">शुद्धम्:</span> <ins>भीमाः कालायसमयाः</ins></span>
+                            <span style="opacity: 0.35;">|</span>
+                            <span class="demo-side"><del>युद्धकाण्डः</del> ➔ <ins>युद्धकाण्डम्</ins></span>
+                        </div>
+                    </div>
+
+                    <!-- Rule 6: Typo & OCR Corruptions -->
+                    <div class="guide-rule-item border-text">
+                        <div class="guide-rule-name">
+                            <span>६. मुद्रणभ्रंशाः व ओसीआर-अक्षरभ्रान्तिः</span>
+                            <span class="guide-rule-sutra">Typography / OCR</span>
+                        </div>
+                        <div class="guide-rule-body">
+                            मुद्रणे ओसीआर-प्रक्रियायां वा पतितानां सदृशवर्णानां (ध/घ, दृ/हृ) तथा कोलन-चिह्नस्य (:) स्थाने विसर्गस्य (ः) शोधनम्।
+                        </div>
+                        <div class="guide-diff-demo">
+                            <span class="demo-side"><span class="demo-label">दोषः:</span> <del>दृष्टा योधाः</del></span>
+                            <span class="demo-arrow">➔</span>
+                            <span class="demo-side"><span class="demo-label">शुद्धम्:</span> <ins>हृष्टा योधाः</ins></span>
+                            <span style="opacity: 0.35;">|</span>
+                            <span class="demo-side"><del>स: गच्छति</del> ➔ <ins>सः गच्छति</ins></span>
+                        </div>
+                    </div>
+
+                    <!-- Rule 7: Textual Preservation -->
+                    <div class="guide-rule-item border-text" style="background: rgba(245, 158, 11, 0.05); border-left-color: #f59e0b;">
+                        <div class="guide-rule-name">
+                            <span style="color: #b45309;">७. 🛡️ पाठसंरक्षणम् (Textual Preservation)</span>
+                            <span class="guide-rule-sutra">व्यत्ययो बहुलम् पा० ३.१.८५</span>
+                        </div>
+                        <div class="guide-rule-body">
+                            आर्षप्रयोगाः (यथा रामायणे 'कुर्मि'), छन्दोरक्षार्थं प्रयुक्ताः पाठाः, पाण्डित्य-समर्थनीयाश्च पाठाः नैव प्रमादत्वेन परिवर्तनीयाः, अपि तु संरक्षणीयाः।
+                        </div>
+                        <div class="guide-diff-demo">
+                            <span class="demo-side"><span class="demo-label">संरक्षितम्:</span> <ins style="background: #fef3c7; color: #92400e;">कुर्मि</ins></span>
+                            <span class="demo-arrow">•</span>
+                            <span style="font-size: 0.85rem; color: #b45309;">रामायणे आर्षरूपम् — छन्दोभङ्गवारणार्थं सुरक्षितम्</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column 2: Layout Mistakes -->
+                <div class="guide-category-column guide-col-layout">
+                    <div class="guide-cat-header-card header-layout">
+                        <div class="guide-cat-title">
+                            <span>📐</span>
+                            <span>विन्यासदोषाः (Layout Mistakes - Structure &amp; Spacing)</span>
+                        </div>
+                        <div class="guide-cat-desc">
+                            ग्रन्थस्य बाह्य-विन्यासे, पूर्णविराम-दण्डेषु (। / ॥), शब्दरिक्तान्तरेषु, योजकचिह्नेषु (-), श्लोकपादविभाजने (\line), गद्यपद्यपृथक्करणे (\par) च विद्यमाना दोषाः।
+                        </div>
+                    </div>
+
+                    <!-- Rule 1: Danda rules -->
+                    <div class="guide-rule-item border-layout">
+                        <div class="guide-rule-name">
+                            <span>१. अर्धश्लोक-पूर्णश्लोक-दण्डव्यवस्था</span>
+                            <span class="guide-rule-sutra">दण्ड-प्रयोग-नियमः</span>
+                        </div>
+                        <div class="guide-rule-body">
+                            श्लोकार्धे (प्रथमचरणद्वयान्ते) एकदण्डः ( ।), श्लोकान्ते सूत्रान्ते पुष्पिकासु च प्रामाणिक-द्विदण्डः ( ॥) प्रयोक्तव्यः। पाइप-चिह्नं (||) वा ।। सर्वथा वर्ज्यम्।
+                        </div>
+                        <div class="guide-diff-demo">
+                            <span class="demo-side"><span class="demo-label">दोषः:</span> <del>पदम् ।</del> (श्लोकान्ते)</span>
+                            <span class="demo-arrow">➔</span>
+                            <span class="demo-side"><span class="demo-label">शुद्धम्:</span> <ins>पदम् ॥</ins></span>
+                            <span style="opacity: 0.35;">|</span>
+                            <span class="demo-side"><del>।।</del> / <del>||</del> ➔ <ins>॥</ins></span>
+                        </div>
+                    </div>
+
+                    <!-- Rule 2: Prose commentary danda -->
+                    <div class="guide-rule-item border-layout">
+                        <div class="guide-rule-name">
+                            <span>२. गद्यवाक्ये दण्डविवेकः</span>
+                            <span class="guide-rule-sutra">गद्य-दण्ड-नियमः</span>
+                        </div>
+                        <div class="guide-rule-body">
+                            गद्यव्याख्याने वाक्यानां मध्ये (यथा 'तथा च...', 'अत एव...') एकदण्ड एव ( ।), न तु द्विदण्डः ( ॥)। प्रकरणसमाप्तौ तु द्विदण्डः प्रामाणिकः।
+                        </div>
+                        <div class="guide-diff-demo">
+                            <span class="demo-side"><span class="demo-label">दोषः:</span> <del>...सूचितम् ॥ तथा च...</del></span>
+                            <span class="demo-arrow">➔</span>
+                            <span class="demo-side"><span class="demo-label">शुद्धम्:</span> <ins>...सूचितम् । तथा च...</ins></span>
+                        </div>
+                    </div>
+
+                    <!-- Rule 3: Word boundary separation -->
+                    <div class="guide-rule-item border-layout">
+                        <div class="guide-rule-name">
+                            <span>३. पदविभाग-रिक्तान्तरम्</span>
+                            <span class="guide-rule-sutra">तथाच ➔ तथा च</span>
+                        </div>
+                        <div class="guide-rule-body">
+                            असमासपदानाम्, अव्ययानां च परस्परसंश्लेषे मानकैकान्तरं (Single Space) स्थापनीयम्।
+                        </div>
+                        <div class="guide-diff-demo">
+                            <span class="demo-side"><span class="demo-label">दोषः:</span> <del>तथाच</del></span>
+                            <span class="demo-arrow">➔</span>
+                            <span class="demo-side"><span class="demo-label">शुद्धम्:</span> <ins>तथा च</ins></span>
+                            <span style="opacity: 0.35;">|</span>
+                            <span class="demo-side"><del>अतएव</del> ➔ <ins>अत एव</ins></span>
+                        </div>
+                    </div>
+
+                    <!-- Rule 4: Closing broken word gaps -->
+                    <div class="guide-rule-item border-layout">
+                        <div class="guide-rule-name">
+                            <span>४. विच्छिन्नपद-संधानम्</span>
+                            <span class="guide-rule-sutra">OCR Space Removal</span>
+                        </div>
+                        <div class="guide-rule-body">
+                            ओसीआर-दोषेण वा मुद्रणेन विच्छिन्नानां संयुक्तपदानां समस्तपदानां च आभ्यन्तर-रिक्तस्थानस्य निराकरणम्।
+                        </div>
+                        <div class="guide-diff-demo">
+                            <span class="demo-side"><span class="demo-label">दोषः:</span> <del>कु र्यात्</del> / <del>लङ् का</del></span>
+                            <span class="demo-arrow">➔</span>
+                            <span class="demo-side"><span class="demo-label">शुद्धम्:</span> <ins>कुर्यात्</ins> / <ins>लङ्का</ins></span>
+                            <span style="opacity: 0.35;">|</span>
+                            <span class="demo-side"><del>द्वितीया दशम्योरुत्तरस्यां</del> ➔ <ins>द्वितीयादशम्योरुत्तरस्यां</ins></span>
+                        </div>
+                    </div>
+
+                    <!-- Rule 5: Hyphen & Dash standard -->
+                    <div class="guide-rule-item border-layout">
+                        <div class="guide-rule-name">
+                            <span>५. योजकचिह्न-दोषनिवारणम्</span>
+                            <span class="guide-rule-sutra">Hyphen Standardization</span>
+                        </div>
+                        <div class="guide-rule-body">
+                            मुद्रणपङ्क्तिविच्छेदे समस्तपदस्य मध्ये पतितानां योजकचिह्नानां निरासः, योजकचिह्नस्य पुरतः पश्चाद् वा भ्रष्टरिक्तस्थानानां निराकरणम्।
+                        </div>
+                        <div class="guide-diff-demo">
+                            <span class="demo-side"><span class="demo-label">दोषः:</span> <del>भाविसेना-\line नयन</del></span>
+                            <span class="demo-arrow">➔</span>
+                            <span class="demo-side"><span class="demo-label">शुद्धम्:</span> <ins>भाविसेनानयन</ins></span>
+                            <span style="opacity: 0.35;">|</span>
+                            <span class="demo-side"><del>शत्रुवध- राज्याभिषेक</del> ➔ <ins>शत्रुवध-राज्याभिषेक</ins></span>
+                        </div>
+                    </div>
+
+                    <!-- Rule 6: Within-a-shloka line break -->
+                    <div class="guide-rule-item border-layout">
+                        <div class="guide-rule-name">
+                            <span>६. श्लोकपाद-विभाजनम्</span>
+                            <span class="guide-rule-sutra">Line Break: \line</span>
+                        </div>
+                        <div class="guide-rule-body">
+                            एकस्मिन् श्लोके पादानां मध्ये एकैव पङ्क्तिः (\line), न तु अनुच्छेद-विच्छेदः (\par)। श्लोको हि अविभाज्यं छन्दोरूपम्।
+                        </div>
+                        <div class="guide-diff-demo">
+                            <span class="demo-side"><span class="demo-label">दोषः:</span> <del>दीर्घदीधितिः । \par</del></span>
+                            <span class="demo-arrow">➔</span>
+                            <span class="demo-side"><span class="demo-label">शुद्धम्:</span> <ins>दीर्घदीधितिः । \line</ins></span>
+                        </div>
+                    </div>
+
+                    <!-- Rule 7: Shloka-prose stanza separation -->
+                    <div class="guide-rule-item border-layout">
+                        <div class="guide-rule-name">
+                            <span>७. पद्य-गद्य-विवेकः व श्लोकपृथक्करणम्</span>
+                            <span class="guide-rule-sutra">Paragraph: \par</span>
+                        </div>
+                        <div class="guide-rule-body">
+                            भिन्नश्लोकानां मध्ये, गद्यव्याख्यान-श्लोकयोश्च मध्ये अवश्यम् अनुच्छेद-विच्छेदः (\par)। श्लोको न गद्यवद् धार्यः।
+                        </div>
+                        <div class="guide-diff-demo">
+                            <span class="demo-side"><span class="demo-label">दोषः:</span> <del>...विचारितवानित्युद्योगे- \line श्लोकः...</del></span>
+                            <span class="demo-arrow">➔</span>
+                            <span class="demo-side"><span class="demo-label">शुद्धम्:</span> <ins>...विचारितवानित्युद्योगे- \par श्लोकः...</ins></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-modal-footer" style="justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.78rem; color: var(--text-muted);">Shortcuts: <kbd>I</kbd> to toggle, <kbd>Esc</kbd> to close</span>
+            <button type="button" class="settings-done-action" id="closeDoshaInfoDoneBtn">✓ ज्ञातम् (Understood)</button>
+        </div>
+    </div>
 </div>
 
 <!-- Settings & Data Source Modal Dialog -->
@@ -1840,6 +2414,10 @@ ins {
                     <div style="display: flex; justify-content: space-between;">
                         <span>Toggle Dark / Light Theme</span>
                         <code>Alt + T</code>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Classification Guide (दोषभेद-परिचयः)</span>
+                        <code>I</code>
                     </div>
                     <div style="display: flex; justify-content: space-between;">
                         <span>Open / Close Shortcuts Help</span>
@@ -2333,16 +2911,27 @@ document.addEventListener('keydown', (e) => {
 
     // Escape: Close modal or close search
     if (e.key === 'Escape') {
-        if (settingsModalBackdrop && settingsModalBackdrop.style.display === 'flex') {
+        if (doshaInfoModalBackdrop && doshaInfoModalBackdrop.style.display === 'flex') {
+            closeDoshaInfoModal();
+            return;
+        } else if (settingsModalBackdrop && settingsModalBackdrop.style.display === 'flex') {
             closeSettingsModal();
+            return;
         } else if (searchInputWrapper && searchInputWrapper.classList.contains('open')) {
             closeSearch();
+            return;
         }
-        return;
     }
 
     const activeEl = document.activeElement;
     const isInputFocused = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA');
+
+    // 'I' or 'i' when not typing: Toggle Doshabheda Info pop-up
+    if (!isInputFocused && e.key.toLowerCase() === 'i') {
+        e.preventDefault();
+        toggleDoshaInfoModal();
+        return;
+    }
 
     // Alt + S: Toggle Side-by-Side vs Stacked Diff Layout
     if (e.altKey && e.key.toLowerCase() === 's') {
@@ -2397,7 +2986,65 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ==========================================================================
-// MODAL CONTROLS
+// DOSHABHEDA CLASSIFICATION GUIDE CONTROLS
+// ==========================================================================
+const doshaInfoModalBackdrop = document.getElementById('doshaInfoModalBackdrop');
+const openDoshaInfoBtnHeader = document.getElementById('openDoshaInfoBtnHeader');
+const openDoshaInfoBtnPill = document.getElementById('openDoshaInfoBtnPill');
+const closeDoshaInfoBtn = document.getElementById('closeDoshaInfoBtn');
+const closeDoshaInfoDoneBtn = document.getElementById('closeDoshaInfoDoneBtn');
+const guideCategoriesGrid = document.getElementById('guideCategoriesGrid');
+
+function openDoshaInfoModal(tab = 'all') {
+    if (!doshaInfoModalBackdrop) return;
+    doshaInfoModalBackdrop.style.display = 'flex';
+    doshaInfoModalBackdrop.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    switchGuideTab(tab);
+}
+
+function closeDoshaInfoModal() {
+    if (!doshaInfoModalBackdrop) return;
+    doshaInfoModalBackdrop.style.display = 'none';
+    doshaInfoModalBackdrop.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+}
+
+function toggleDoshaInfoModal() {
+    if (doshaInfoModalBackdrop && doshaInfoModalBackdrop.style.display === 'flex') {
+        closeDoshaInfoModal();
+    } else {
+        openDoshaInfoModal('all');
+    }
+}
+
+function switchGuideTab(tab) {
+    if (!guideCategoriesGrid) return;
+    document.querySelectorAll('.guide-tab-pill').forEach(pill => {
+        pill.classList.toggle('active', pill.getAttribute('data-guidetab') === tab);
+    });
+
+    guideCategoriesGrid.classList.remove('show-only-text', 'show-only-layout');
+    if (tab === 'text') {
+        guideCategoriesGrid.classList.add('show-only-text');
+    } else if (tab === 'layout') {
+        guideCategoriesGrid.classList.add('show-only-layout');
+    }
+}
+
+if (openDoshaInfoBtnHeader) openDoshaInfoBtnHeader.addEventListener('click', () => openDoshaInfoModal('all'));
+if (openDoshaInfoBtnPill) openDoshaInfoBtnPill.addEventListener('click', () => openDoshaInfoModal('all'));
+if (closeDoshaInfoBtn) closeDoshaInfoBtn.addEventListener('click', closeDoshaInfoModal);
+if (closeDoshaInfoDoneBtn) closeDoshaInfoDoneBtn.addEventListener('click', closeDoshaInfoModal);
+
+if (doshaInfoModalBackdrop) {
+    doshaInfoModalBackdrop.addEventListener('click', (e) => {
+        if (e.target === doshaInfoModalBackdrop) closeDoshaInfoModal();
+    });
+}
+
+// ==========================================================================
+// MODAL CONTROLS (Settings & Source)
 // ==========================================================================
 const openSettingsModalBtn = document.getElementById('openSettingsModalBtn');
 const closeSettingsModalBtn = document.getElementById('closeSettingsModalBtn');
