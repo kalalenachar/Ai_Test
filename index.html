@@ -575,62 +575,40 @@ body {
     gap: 0.85rem;
 }
 
-.range-tabs-scroll {
-    display: flex;
-    align-items: center;
-    gap: 0.45rem;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    max-width: 100%;
-}
-
-.range-tab-btn {
-    padding: 0.48rem 1rem;
-    border: 1px solid transparent;
-    background: transparent;
-    border-radius: var(--radius-sm);
-    font-size: 0.86rem;
-    font-weight: 700;
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: all 0.15s ease;
+.nav-ledger-status {
     display: inline-flex;
     align-items: center;
-    gap: 0.45rem;
-    white-space: nowrap;
-    user-select: none;
-}
-
-.range-tab-btn:hover {
+    gap: 0.6rem;
+    font-size: 0.88rem;
+    font-weight: 700;
     color: var(--text-primary);
-    background: rgba(0, 0, 0, 0.05);
 }
 
-:root[data-theme="dark"] .range-tab-btn:hover {
-    background: rgba(255, 255, 255, 0.06);
+.ledger-indicator-dot {
+    color: var(--badge-layout-text);
+    font-size: 0.75rem;
+    animation: pulseDot 2s infinite ease-in-out;
 }
 
-.range-tab-btn.active {
-    background: var(--bg-surface);
-    color: var(--text-primary);
-    border-color: var(--border-color);
-    box-shadow: var(--shadow-sm);
+@keyframes pulseDot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
 }
 
-.range-tab-btn .tab-count {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    padding: 0.1rem 0.5rem;
-    border-radius: 10px;
-    background: var(--bg-surface-high);
-    color: var(--text-secondary);
+.ledger-scope-title {
     font-weight: 800;
+    letter-spacing: -0.01em;
 }
 
-.range-tab-btn.active .tab-count {
-    background: var(--primary);
-    color: #ffffff;
+.ledger-count-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.74rem;
+    font-weight: 700;
+    padding: 0.15rem 0.55rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    color: var(--text-secondary);
 }
 
 /* Search Trigger Button (Default State) */
@@ -1326,12 +1304,7 @@ ins {
     font-weight: 800;
 }
 
-/* Bottom Synchronized Navigation */
-.bottom-nav-row {
-    margin-top: 2.5rem;
-    display: flex;
-    justify-content: center;
-}
+
 
 
 /* ==========================================================================
@@ -1571,7 +1544,7 @@ ins {
         color: #000000 !important;
         padding: 0 !important;
     }
-    .top-bar-sticky, .navigation-workbench, .bottom-nav-row, .app-toast, .results-summary-strip .inline-action-btn {
+    .top-bar-sticky, .navigation-workbench, .app-toast, .results-summary-strip .inline-action-btn {
         display: none !important;
     }
     .change-card {
@@ -1705,12 +1678,14 @@ ins {
         </div>
     </section>
 
-    <!-- Navigation Workbench: Page Groups, Jump Strip, Category Pills & Instant Search -->
+    <!-- Navigation Workbench: Page Jump Strip, Category Pills & Instant Search -->
     <nav class="navigation-workbench" aria-label="Audit Navigation and Filters">
-        <!-- Row 1: Page Groups & Instant Search -->
+        <!-- Row 1: Ledger Status & Instant Search -->
         <div class="nav-top-row">
-            <div class="range-tabs-scroll" id="topTabsContainer" role="tablist">
-                <!-- Dynamically populated from JSON groups -->
+            <div class="nav-ledger-status">
+                <span class="ledger-indicator-dot">●</span>
+                <span class="ledger-scope-title">समग्र-शोधन-पटलः (Pages 1–30)</span>
+                <span class="ledger-count-pill" id="ledgerTotalBadge">300 स्थानानि</span>
             </div>
 
             <!-- Search Trigger Button (Default State) -->
@@ -1740,7 +1715,7 @@ ins {
         <!-- Row 3: Category Filter Pills -->
         <div class="filters-pills-row">
             <div class="pills-group" id="filterPillsContainer" role="group" aria-label="Filter Categories">
-                <button class="filter-pill active" data-filter="all" title="Show all entries in active page range">
+                <button class="filter-pill active" data-filter="all" title="Show all entries (Pages 1–30)">
                     <span>सर्वविधाः (All)</span>
                     <span class="pill-counter" id="countFilterAll">0</span>
                 </button>
@@ -1779,13 +1754,6 @@ ins {
     <main id="cardsContainer" class="cards-stream-container" aria-live="polite">
         <div class="loading-box">⏳ Loading proofreading ledger data...</div>
     </main>
-
-    <!-- Bottom Page Group Navigation -->
-    <div class="bottom-nav-row">
-        <div class="range-tabs-scroll" id="bottomTabsContainer" style="background: var(--bg-surface); padding: 0.4rem 0.6rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
-            <!-- Synchronized bottom tabs -->
-        </div>
-    </div>
 
 </div>
 
@@ -1857,8 +1825,6 @@ ins {
 // APPLICATION STATE
 // ==========================================================================
 let allItems = [];
-let groups = [];
-let activeGroup = 'p1_10';
 let activeFilter = 'all'; // 'all', 'text', 'layout', 'preserved'
 let activeJumpPage = 'all';
 let searchQuery = '';
@@ -1869,8 +1835,7 @@ let currentTheme = localStorage.getItem('ppsm_theme') || 'auto';
 // DOM Elements
 const appWrapper = document.getElementById('appWrapper');
 const cardsContainer = document.getElementById('cardsContainer');
-const topTabsContainer = document.getElementById('topTabsContainer');
-const bottomTabsContainer = document.getElementById('bottomTabsContainer');
+const ledgerTotalBadge = document.getElementById('ledgerTotalBadge');
 const jumpChipsContainer = document.getElementById('jumpChipsContainer');
 const searchTriggerBtn = document.getElementById('searchTriggerBtn');
 const searchInputWrapper = document.getElementById('searchInputWrapper');
@@ -2003,85 +1968,23 @@ function processDataSet(data) {
         return (a.ref_id || '').localeCompare(b.ref_id || '', undefined, { numeric: true });
     });
 
-    // Discover groups
-    const groupMap = new Map();
-    allItems.forEach(item => {
-        const gKey = item.group || 'default';
-        const gLabel = item.group_label || (gKey === 'all' ? 'All Pages' : gKey);
-        if (!groupMap.has(gKey)) {
-            groupMap.set(gKey, { key: gKey, label: gLabel, count: 0, pages: new Set() });
-        }
-        const gObj = groupMap.get(gKey);
-        gObj.count++;
-        if (item.page) gObj.pages.add(item.page);
-    });
-
-    groups = Array.from(groupMap.values()).sort((a, b) => extractNum(a.key) - extractNum(b.key));
-
-    if (!groups.some(g => g.key === activeGroup)) {
-        activeGroup = groups.length > 0 ? groups[0].key : 'p1_10';
+    if (ledgerTotalBadge) {
+        ledgerTotalBadge.textContent = `${allItems.length} स्थानानि`;
     }
 
-    renderTabs();
     renderJumpStrip();
     renderCards();
     updateMetricsAndCounts();
     filterAndDisplay();
 }
 
-function renderTabs() {
-    let html = '';
-    groups.forEach(g => {
-        const isActive = activeGroup === g.key ? 'active' : '';
-        html += `
-            <button class="range-tab-btn ${isActive}" data-group="${g.key}" role="tab" aria-selected="${activeGroup === g.key}">
-                <span>${g.label}</span>
-                <span class="tab-count">${g.count}</span>
-            </button>
-        `;
-    });
-
-    topTabsContainer.innerHTML = html;
-    bottomTabsContainer.innerHTML = html;
-
-    const attachListeners = (container, isBottom = false) => {
-        container.querySelectorAll('.range-tab-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const targetGroup = btn.getAttribute('data-group');
-                activeGroup = targetGroup;
-                activeJumpPage = 'all'; // Reset jump page when switching group
-
-                document.querySelectorAll('.range-tab-btn').forEach(b => {
-                    const match = b.getAttribute('data-group') === targetGroup;
-                    b.classList.toggle('active', match);
-                    b.setAttribute('aria-selected', match);
-                });
-
-                renderJumpStrip();
-                updateMetricsAndCounts();
-                filterAndDisplay();
-
-                if (isBottom) {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                }
-            });
-        });
-    };
-
-    attachListeners(topTabsContainer, false);
-    attachListeners(bottomTabsContainer, true);
-}
-
 function renderJumpStrip() {
-    let pages = [];
-    const gObj = groups.find(g => g.key === activeGroup);
-    if (gObj) {
-        pages = Array.from(gObj.pages).sort((a, b) => extractNum(a) - extractNum(b));
-    }
+    const pages = Array.from(new Set(allItems.map(it => it.page))).filter(Boolean)
+        .sort((a, b) => extractNum(a) - extractNum(b));
 
-    let html = `<button class="page-chip ${activeJumpPage === 'all' ? 'active' : ''}" data-jump="all">सर्वे (All in Range)</button>`;
+    let html = `<button class="page-chip ${activeJumpPage === 'all' ? 'active' : ''}" data-jump="all">सर्वे (All Pages • ${allItems.length})</button>`;
     pages.forEach(pg => {
-        const countOnPage = allItems.filter(it => it.group === activeGroup && it.page === pg).length;
+        const countOnPage = allItems.filter(it => it.page === pg).length;
         const isActive = activeJumpPage === pg ? 'active' : '';
         html += `<button class="page-chip ${isActive}" data-jump="${pg}">${pg} (${countOnPage})</button>`;
     });
@@ -2186,11 +2089,10 @@ function renderCards() {
 
 // Update HUD & Filter Counters
 function updateMetricsAndCounts() {
-    const scopeItems = allItems.filter(m => m.group === activeGroup);
-    const total = scopeItems.length;
-    const textCount = scopeItems.filter(m => (m.cat_keys || '') === 'text' || (m.badge_class || '').includes('text')).length;
-    const layoutCount = scopeItems.filter(m => (m.cat_keys || '') === 'layout' || (m.badge_class || '').includes('layout')).length;
-    const preservedCount = scopeItems.filter(m => m.is_preserved).length;
+    const total = allItems.length;
+    const textCount = allItems.filter(m => (m.cat_keys || '') === 'text' || (m.badge_class || '').includes('text')).length;
+    const layoutCount = allItems.filter(m => (m.cat_keys || '') === 'layout' || (m.badge_class || '').includes('layout')).length;
+    const preservedCount = allItems.filter(m => m.is_preserved).length;
 
     if (metricCountTotal) metricCountTotal.textContent = total;
     if (metricCountText) metricCountText.textContent = textCount;
@@ -2219,14 +2121,10 @@ function filterAndDisplay() {
 
     cards.forEach(card => {
         const cardId = card.getAttribute('data-id');
-        const cardGroup = card.getAttribute('data-group') || '';
         const cardPage = card.getAttribute('data-page') || '';
         const cardCat = card.getAttribute('data-category') || '';
         const isCardPreserved = card.getAttribute('data-preserved') === 'true';
         const item = itemMap.get(cardId);
-
-        // Group check
-        const matchesGroup = (cardGroup === activeGroup);
 
         // Jump page check
         const matchesJump = (activeJumpPage === 'all') || (cardPage === activeJumpPage);
@@ -2256,7 +2154,7 @@ function filterAndDisplay() {
             matchesSearch = searchIndex.includes(q);
         }
 
-        if (matchesGroup && matchesJump && matchesFilter && matchesSearch) {
+        if (matchesJump && matchesFilter && matchesSearch) {
             card.style.display = 'block';
             visibleCount++;
         } else {
@@ -2265,10 +2163,6 @@ function filterAndDisplay() {
     });
 
     // Update Showing count text
-    const totalScope = allItems.filter(m => m.group === activeGroup).length;
-    const gObj = groups.find(g => g.key === activeGroup);
-    const groupLabel = gObj ? gObj.label : activeGroup;
-
     let summaryExtras = [];
     if (activeFilter !== 'all') {
         const filterNames = {
@@ -2281,7 +2175,7 @@ function filterAndDisplay() {
     if (activeJumpPage !== 'all') summaryExtras.push(`Page: ${activeJumpPage}`);
     if (q.length > 0) summaryExtras.push(`Search: "${q}"`);
 
-    showingCountText.textContent = `दर्शितम्: ${visibleCount} / ${totalScope} स्थानानि (${groupLabel})`;
+    showingCountText.textContent = `दर्शितम्: ${visibleCount} / ${allItems.length} स्थानानि (Pages 1–30)`;
     activeFiltersSummary.textContent = summaryExtras.length > 0 ? `[${summaryExtras.join(' | ')}]` : '';
 }
 
