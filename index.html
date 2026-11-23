@@ -405,35 +405,7 @@ body {
     box-shadow: var(--focus-ring);
 }
 
-.font-scale-trio {
-    display: inline-flex;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm);
-    overflow: hidden;
-    background: var(--bg-surface);
-    box-shadow: var(--shadow-sm);
-}
 
-.font-scale-trio button {
-    border: none;
-    background: transparent;
-    padding: 0.42rem 0.65rem;
-    font-size: 0.82rem;
-    font-weight: 700;
-    color: var(--text-secondary);
-    cursor: pointer;
-    border-right: 1px solid var(--border-color);
-    transition: all 0.15s ease;
-}
-
-.font-scale-trio button:last-child {
-    border-right: none;
-}
-
-.font-scale-trio button:hover {
-    background: var(--primary-light);
-    color: var(--primary);
-}
 
 /* ==========================================================================
    EXECUTIVE METRICS HUD & TELEMETRY PULSE
@@ -1583,29 +1555,10 @@ ins {
             </div>
 
             <div class="top-bar-actions">
-                <!-- View Mode Toggle -->
-                <button id="viewModeToggleBtn" class="ctrl-btn" title="Toggle Side-by-Side vs. Stacked Diff Layout" aria-label="Toggle Diff Layout">
-                    <span id="viewModeIcon">↔️</span>
-                    <span id="viewModeLabel">Side-by-Side</span>
-                </button>
-
-                <!-- Font Scaler -->
-                <div class="font-scale-trio" title="Adjust Sanskrit text size">
-                    <button id="fontDecBtn" aria-label="Decrease Sanskrit text size">अ−</button>
-                    <button id="fontResetBtn" aria-label="Reset Sanskrit text size">अ</button>
-                    <button id="fontIncBtn" aria-label="Increase Sanskrit text size">अ+</button>
-                </div>
-
                 <!-- Theme Mode Toggle -->
-                <button id="themeToggleBtn" class="ctrl-btn" title="Toggle Dark/Light Mode" aria-label="Toggle Theme">
+                <button id="themeToggleBtn" class="ctrl-btn" title="Toggle Dark/Light Mode (Alt+T)" aria-label="Toggle Theme">
                     <span id="themeToggleIcon">🌓</span>
                     <span id="themeToggleLabel">Theme</span>
-                </button>
-
-                <!-- Settings & Data Source Trigger -->
-                <button id="openSettingsModalBtn" class="ctrl-btn" title="Settings &amp; Data Source" aria-haspopup="dialog" aria-expanded="false">
-                    <span>⚙️</span>
-                    <span>व्यवस्थापनम्</span>
                 </button>
             </div>
         </div>
@@ -1791,17 +1744,37 @@ ins {
             <!-- Keyboard Shortcuts Cheat-sheet -->
             <div class="settings-box-panel">
                 <h4 class="settings-panel-heading">⌨️ कीलकावली-लघुमार्गाः (Keyboard Shortcuts)</h4>
-                <div style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.8rem; color: var(--text-secondary);">
+                <div style="display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.82rem; color: var(--text-secondary);">
                     <div style="display: flex; justify-content: space-between;">
                         <span>Instant Search</span>
                         <code>Cmd/Ctrl + K</code>
                     </div>
                     <div style="display: flex; justify-content: space-between;">
-                        <span>Toggle Diff Layout</span>
+                        <span>Toggle Diff Layout (Side-by-Side / Stacked)</span>
                         <code>Alt + S</code>
                     </div>
                     <div style="display: flex; justify-content: space-between;">
-                        <span>Close Modal Dialog</span>
+                        <span>Increase Sanskrit Font Size</span>
+                        <code>Alt + +</code>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Decrease Sanskrit Font Size</span>
+                        <code>Alt + -</code>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Reset Sanskrit Font Size</span>
+                        <code>Alt + 0</code>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Toggle Dark / Light Theme</span>
+                        <code>Alt + T</code>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Open / Close Shortcuts Help</span>
+                        <code>?</code>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Close Modal Dialog / Search</span>
                         <code>Escape</code>
                     </div>
                 </div>
@@ -1905,7 +1878,7 @@ applyTheme(currentTheme);
 // ==========================================================================
 // VIEW MODE TOGGLE (Side-by-Side vs. Stacked)
 // ==========================================================================
-function applyViewMode(mode) {
+function applyViewMode(mode, showNotification = false) {
     currentViewMode = mode;
     localStorage.setItem('ppsm_view_mode', mode);
     const viewModeIcon = document.getElementById('viewModeIcon');
@@ -1920,28 +1893,34 @@ function applyViewMode(mode) {
         if (viewModeIcon) viewModeIcon.textContent = '↔️';
         if (viewModeLabel) viewModeLabel.textContent = 'Side-by-Side';
     }
+    if (showNotification) {
+        showToast(`Layout: ${mode === 'stacked' ? 'Stacked (↕️)' : 'Side-by-Side (↔️)'}`);
+    }
 }
 
-document.getElementById('viewModeToggleBtn').addEventListener('click', () => {
-    applyViewMode(currentViewMode === 'side-by-side' ? 'stacked' : 'side-by-side');
+document.getElementById('viewModeToggleBtn')?.addEventListener('click', () => {
+    applyViewMode(currentViewMode === 'side-by-side' ? 'stacked' : 'side-by-side', true);
 });
 
 // ==========================================================================
 // FONT SIZE SCALING
 // ==========================================================================
-function applyFontSize(size) {
+function applyFontSize(size, showNotification = false) {
     currentFontSize = Math.min(Math.max(size, 0.85), 1.55);
     localStorage.setItem('ppsm_font_size', currentFontSize.toFixed(2));
     document.documentElement.style.setProperty('--dev-font-size', currentFontSize + 'rem');
+    if (showNotification) {
+        showToast(`Devanagari Font Size: ${currentFontSize.toFixed(2)}rem`);
+    }
 }
 
-const fontDec = () => applyFontSize(currentFontSize - 0.05);
-const fontReset = () => applyFontSize(1.55);
-const fontInc = () => applyFontSize(currentFontSize + 0.05);
+const fontDec = (showNotification = false) => applyFontSize(currentFontSize - 0.05, showNotification);
+const fontReset = (showNotification = false) => applyFontSize(1.55, showNotification);
+const fontInc = (showNotification = false) => applyFontSize(currentFontSize + 0.05, showNotification);
 
-document.getElementById('fontDecBtn').addEventListener('click', fontDec);
-document.getElementById('fontResetBtn').addEventListener('click', fontReset);
-document.getElementById('fontIncBtn').addEventListener('click', fontInc);
+document.getElementById('fontDecBtn')?.addEventListener('click', () => fontDec(true));
+document.getElementById('fontResetBtn')?.addEventListener('click', () => fontReset(true));
+document.getElementById('fontIncBtn')?.addEventListener('click', () => fontInc(true));
 
 // ==========================================================================
 // SCROLL CONTROLS
@@ -2258,22 +2237,79 @@ searchClearBtn.addEventListener('click', () => {
     closeSearch();
 });
 
-// Keyboard Shortcut: Cmd/Ctrl + K to reveal & focus search
+// ==========================================================================
+// KEYBOARD SHORTCUTS
+// ==========================================================================
 document.addEventListener('keydown', (e) => {
+    // Cmd/Ctrl + K: Reveal & focus instant search
     if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         openSearch();
+        return;
     }
+
+    // Escape: Close modal or close search
     if (e.key === 'Escape') {
         if (settingsModalBackdrop && settingsModalBackdrop.style.display === 'flex') {
             closeSettingsModal();
         } else if (searchInputWrapper && searchInputWrapper.classList.contains('open')) {
             closeSearch();
         }
+        return;
     }
+
+    const activeEl = document.activeElement;
+    const isInputFocused = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA');
+
+    // Alt + S: Toggle Side-by-Side vs Stacked Diff Layout
     if (e.altKey && e.key.toLowerCase() === 's') {
         e.preventDefault();
-        applyViewMode(currentViewMode === 'side-by-side' ? 'stacked' : 'side-by-side');
+        applyViewMode(currentViewMode === 'side-by-side' ? 'stacked' : 'side-by-side', true);
+        return;
+    }
+
+    // Alt + '+' or Alt + '=': Increase Sanskrit font size
+    if (e.altKey && (e.key === '+' || e.key === '=')) {
+        e.preventDefault();
+        fontInc(true);
+        return;
+    }
+
+    // Alt + '-': Decrease Sanskrit font size
+    if (e.altKey && (e.key === '-' || e.key === '_')) {
+        e.preventDefault();
+        fontDec(true);
+        return;
+    }
+
+    // Alt + '0': Reset Sanskrit font size
+    if (e.altKey && e.key === '0') {
+        e.preventDefault();
+        fontReset(true);
+        return;
+    }
+
+    // Alt + T: Toggle Dark / Light Theme
+    if (e.altKey && e.key.toLowerCase() === 't') {
+        e.preventDefault();
+        if (currentTheme === 'auto') applyTheme('dark');
+        else if (currentTheme === 'dark') applyTheme('light');
+        else applyTheme('auto');
+        showToast(`Theme switched to: ${currentTheme.toUpperCase()}`);
+        return;
+    }
+
+    // '?' (Shift + /) when not typing: Toggle shortcuts modal dialog
+    if (!isInputFocused && e.key === '?') {
+        e.preventDefault();
+        if (settingsModalBackdrop) {
+            if (settingsModalBackdrop.style.display === 'flex') {
+                closeSettingsModal();
+            } else {
+                openSettingsModal();
+            }
+        }
+        return;
     }
 });
 
@@ -2310,12 +2346,6 @@ if (settingsModalBackdrop) {
         if (e.target === settingsModalBackdrop) closeSettingsModal();
     });
 }
-
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && settingsModalBackdrop && settingsModalBackdrop.style.display === 'flex') {
-        closeSettingsModal();
-    }
-});
 
 // ==========================================================================
 // CLIPBOARD & TOAST NOTIFICATIONS
