@@ -86,7 +86,7 @@
     --radius-lg: 14px;
     --radius-xl: 20px;
     
-    --dev-font-size: 1.05rem;
+    --dev-font-size: 1.55rem;
     --focus-ring: 0 0 0 3px rgba(217, 119, 6, 0.35);
 }
 
@@ -1759,19 +1759,6 @@ ins {
                 </div>
             </div>
 
-            <!-- Font Size -->
-            <div class="settings-box-panel">
-                <h4 class="settings-panel-heading">🔤 अक्षरप्रमाणम् (Devanagari Font Size)</h4>
-                <div class="settings-row-item">
-                    <span style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">संस्कृत-पाठ-परिमाणम्:</span>
-                    <div class="font-scale-trio">
-                        <button id="modalFontDecBtn">अ−</button>
-                        <button id="modalFontResetBtn">अ</button>
-                        <button id="modalFontIncBtn">अ+</button>
-                    </div>
-                </div>
-            </div>
-
             <!-- Keyboard Shortcuts Cheat-sheet -->
             <div class="settings-box-panel">
                 <h4 class="settings-panel-heading">⌨️ कीलकावली-लघुमार्गाः (Keyboard Shortcuts)</h4>
@@ -1815,7 +1802,7 @@ let activeFilter = 'all'; // 'all', 'text', 'layout', 'preserved'
 let activeJumpPage = 'all';
 let searchQuery = '';
 let currentViewMode = localStorage.getItem('ppsm_view_mode') || 'side-by-side';
-let currentFontSize = parseFloat(localStorage.getItem('ppsm_font_size') || '1.05');
+let currentFontSize = parseFloat(localStorage.getItem('ppsm_font_size') || '1.55');
 let currentTheme = localStorage.getItem('ppsm_theme') || 'auto';
 
 // DOM Elements
@@ -1921,16 +1908,12 @@ function applyFontSize(size) {
 }
 
 const fontDec = () => applyFontSize(currentFontSize - 0.05);
-const fontReset = () => applyFontSize(1.05);
+const fontReset = () => applyFontSize(1.55);
 const fontInc = () => applyFontSize(currentFontSize + 0.05);
 
 document.getElementById('fontDecBtn').addEventListener('click', fontDec);
 document.getElementById('fontResetBtn').addEventListener('click', fontReset);
 document.getElementById('fontIncBtn').addEventListener('click', fontInc);
-
-document.getElementById('modalFontDecBtn').addEventListener('click', fontDec);
-document.getElementById('modalFontResetBtn').addEventListener('click', fontReset);
-document.getElementById('modalFontIncBtn').addEventListener('click', fontInc);
 
 // ==========================================================================
 // SCROLL CONTROLS
